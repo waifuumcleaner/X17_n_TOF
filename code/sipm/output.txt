@@ -1,0 +1,70 @@
+Check and parse text data if needed
+ Parsed 0 (out of 1) text file and converted to root
+Check and parse text data if needed
+ Parsed 0 (out of 3) text file and converted to root
+
+Reading pedestal from root file . . .
+
+With 0.5 ns resolution on timing measurements, a scintillator bar can be divided in 5 sections -> x "resolution" using time of arrival information is 100 mm
+Total Acquisition time [s]: 10003.1
+Number of active SiPM channels from data: 31
+Total Reference Times (triggers) : 2525
+
+Pedestal: active channels, mean ToT, RMS ToT and entries: 
+Channel   Mean ToT  RMS ToT   Entries   
+0         0.00      12.00     8         
+1         22.33     9.53      98291     
+4         0.00      12.00     6         
+5         22.88     13.04     109043    
+8         15.69     3.48      322       
+9         18.52     4.48      23139     
+12        16.64     3.40      197       
+13        0.00      12.00     9         
+16        0.00      12.00     5         
+17        0.00      12.00     8         
+20        0.00      12.00     10        
+21        0.00      12.00     5         
+24        0.00      12.00     8         
+25        0.00      12.00     15        
+28        19.19     5.94      26521     
+32        17.96     5.50      23988     
+33        24.13     9.48      134352    
+36        0.00      12.00     1         
+37        0.00      12.00     17        
+40        0.00      12.00     6         
+41        0.00      12.00     11        
+44        0.00      12.00     6         
+45        0.00      12.00     8         
+48        0.00      12.00     6         
+49        0.00      12.00     10        
+52        0.00      12.00     14        
+53        0.00      12.00     12        
+56        0.00      12.00     17        
+57        0.00      12.00     11        
+60        19.15     6.62      3120      
+61        20.38     6.71      634       
+
+Out of 31 channels, 21 have not enough entries to compute pedestals
+
+OBJ: TCut	CUT	(tot>=36.00 && chan == 0)||(tot>=50.93 && chan == 1)||(tot>=36.00 && chan == 4)||(tot>=62.00 && chan == 5)||(tot>=26.13 && chan == 8)||(tot>=31.97 && chan == 9)||(tot>=26.85 && chan == 12)||(tot>=36.00 && chan == 13)||(tot>=36.00 && chan == 16)||(tot>=36.00 && chan == 17)||(tot>=36.00 && chan == 20)||(tot>=36.00 && chan == 21)||(tot>=36.00 && chan == 24)||(tot>=36.00 && chan == 25)||(tot>=37.00 && chan == 28)||(tot>=34.47 && chan == 32)||(tot>=52.57 && chan == 33)||(tot>=36.00 && chan == 36)||(tot>=36.00 && chan == 37)||(tot>=36.00 && chan == 40)||(tot>=36.00 && chan == 41)||(tot>=36.00 && chan == 44)||(tot>=36.00 && chan == 45)||(tot>=36.00 && chan == 48)||(tot>=36.00 && chan == 49)||(tot>=36.00 && chan == 52)||(tot>=36.00 && chan == 53)||(tot>=36.00 && chan == 56)||(tot>=36.00 && chan == 57)||(tot>=39.01 && chan == 60)||(tot>=40.52 && chan == 61)
+N. of ToT signals over threshold: 50162 out of 61336 total signals ( 81% ) 
+
+Cross coincidence found at trigger 56 (timestamp 2.09734e+08) : scintibars 1 and 10 fired at 16819.5 and 16821.8 respectively
+
+
+Cross coincidence found at trigger 591 (timestamp 2.18252e+09) : scintibars 1 and 10 fired at 7157 and 7159 respectively
+
+
+Cross coincidence found at trigger 1627 (timestamp 6.15569e+09) : scintibars 1 and 10 fired at 4394 and 4396.5 respectively
+
+
+Total anomalous negative time differences of this run: 55205 out of 67542 ( 81.7343% )
+Total coincidences            Total double coincidences     Total cross coincidences      
+379                           56                            3                             
+Statistics:     xy      x      y
+Sum of signals: 0.0000 0.0000 0.0000
+Signal/Trigger: 0.0000 0.0000 0.0000
+Signal/Time[s]: 0.0000 0.0000 0.0000
+
+Run 29 analysis completed
+#  NEntries AcqTime_s xCoinc[0] xCoinc[1] xCoinc[2] xCoinc[3] xCoinc[4] xCoinc[5] xCoinc[6] xCoinc[7] yCoinc[0] yCoinc[1] yCoinc[2] yCoinc[3] yCoinc[4] yCoinc[5] yCoinc[6] yCoinc[7]
