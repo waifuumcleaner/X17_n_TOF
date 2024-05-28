@@ -43,19 +43,25 @@ std::vector<std::vector<float>> get_ToT_pedestal(const std::vector<int> act_ch_v
 /*
  * Return the active channels either from the static "db" or from the provided TTree
  */
-std::vector<int> getActiveChannels(TTree *tl = NULL) {
+std::vector<int> getActiveChannels(TTree *tl = NULL)
+{
     std::vector<int> vret;
     std::set<int> unique_chs;
 
-    if (tl == NULL) {
-        for (int i = 0; i < 32; i++) { // assume active ch 0,1  4,5,  8,9 ...
+    if (tl == NULL)
+    {
+        for (int i = 0; i < 32; i++)
+        { // assume active ch 0,1  4,5,  8,9 ...
             int cc = (i / 2) * 4 + (i % 2);
             vret.push_back(cc);
         }
-    } else {
+    }
+    else
+    {
         tl->Draw("chan", "Entry$<1000", "goff");
         int nn = tl->GetSelectedRows();
-        for (int i = 0; i < nn; ++i) {
+        for (int i = 0; i < nn; ++i)
+        {
             int ch = (int)tl->GetV1()[i];
             unique_chs.insert(ch);
             /*(std::find(vret.begin(), vret.end(), ch) == vret.end())
@@ -72,14 +78,16 @@ std::vector<int> getActiveChannels(TTree *tl = NULL) {
  * Return axis: 0=x, 1=y
  */
 
-int c2axis(int ch) {
+int c2axis(int ch)
+{
     int axis = (ch / 32); // 0=x (vertical bars), 1=y (horizontal bars)
     return axis;
 };
 
 // determine the side of the sipm channel
 // return -1 if channel is masked, or 0: top, 1: right, 2: bottom, 3: left
-int c2side(int ch) {
+int c2side(int ch)
+{
     int maskmap[2][4] = {{0, 0, 1, 1}, {0, 0, 1, 1}}; // [axis][0..3] 1 masked, 0 running ;
     int lrudmap[2][2] = {{2, 0}, {1, 3}};             // [axis][even,odd] <- TO BE VERIFIED
 
@@ -96,7 +104,8 @@ int c2side(int ch) {
 
 // Return the index position (not coordinate) along the side (similar to x,y coordinate)
 // do not check active/inactive/masked channels
-int c2idx(int ch) {
+int c2idx(int ch)
+{
     int axis = (ch / 32);
     // int lrud = ch % 2;
 
@@ -106,26 +115,34 @@ int c2idx(int ch) {
 }
 
 // mapping channel to x / y sipm position
-float c2x(int ch) {
+float c2x(int ch)
+{
     float x = 0;
     float axis = (float)(ch / 32);
     float ipos = 0;
-    if (axis > 0) {
+    if (axis > 0)
+    {
         x = half_bar_length - 2 * half_bar_length * (ch % 2);
-    } else {
+    }
+    else
+    {
         ipos = (float)(ch / 4);
         x = ipos * si_channel_length - si_channel_length * 3.5;
     }
     return x;
 };
 
-float c2y(int ch) {
+float c2y(int ch)
+{
     float y = 0;
     float axis = (float)(ch / 32);
     float ipos = 0;
-    if (axis == 0) {
+    if (axis == 0)
+    {
         y = -half_bar_length + 2 * half_bar_length * (ch % 2);
-    } else {
+    }
+    else
+    {
         ipos = (float)((ch - 32) / 4); // cern test, previous iss test 32 -> 34
         y = -ipos * si_channel_length + si_channel_length * 3.5;
     }
@@ -138,10 +155,12 @@ void timing_analysis(const std::string basepath = "../../test_231020/data", cons
 
 // get the companion paired channel on the other scinti bar end
 // assume paired channels are consecutive
-int pairedChannel(int ch) {
+int pairedChannel(int ch)
+{
 
     int rch = ch + 1;
-    if ((c2side(ch - 1) > 0) && (c2idx(ch - 1) == c2idx(ch))) {
+    if ((c2side(ch - 1) > 0) && (c2idx(ch - 1) == c2idx(ch)))
+    {
         rch = ch - 1;
     }
 
@@ -149,11 +168,13 @@ int pairedChannel(int ch) {
 };
 
 // just a test of the previous functions
-int testa() {
+int testa()
+{
 
     // int a[16]={0,1,4,5,8,9,12,13,16,17,20,21,24,25,28,29};
     int a[16] = {0, 1, 2, 3, 4, 5, 6, 7, 32, 33, 34, 35, 36, 37, 38, 39};
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < 16; i++)
+    {
         int idx = a[i];
         float x = c2x(idx);
         float y = c2y(idx);
@@ -175,12 +196,14 @@ int testa() {
  * return position (see ch2idx) of firing channel coincidences ( one bit per positional coincidence)
  */
 
-uint32_t evalCoincSingle(uint32_t axx) {
+uint32_t evalCoincSingle(uint32_t axx)
+{
     uint32_t even = axx & 0x22222222; // 0xAAAAAAAA if all channels are used
     uint32_t odd = axx & 0x11111111;  // 0x55555555 if all channels used
     uint32_t coinc = (even >> 1) & odd;
-    uint32_t cpos = 0;                           // bit 0 = coinc first pairs, bit 1 = second pairs ...
-    for (int i = 0; i < 8; i++) {                // if all channels used 8 -> 16
+    uint32_t cpos = 0; // bit 0 = coinc first pairs, bit 1 = second pairs ...
+    for (int i = 0; i < 8; i++)
+    {                                            // if all channels used 8 -> 16
         cpos |= ((coinc >> (4 * i) & 0x1) << i); // if all channels used 4 -> 2
     }
     return cpos;
@@ -192,10 +215,12 @@ uint32_t evalCoincSingle(uint32_t axx) {
  * return the two coincidence words (each bit is a coincidence of the two opposite channels in the bar) of each axis
  */
 
-std::vector<uint32_t> evalCoincidence(uint64_t bsig) {
+std::vector<uint32_t> evalCoincidence(uint64_t bsig)
+{
 
     std::vector<uint32_t> vret;
-    for (int i = 0; i < 2; i++) { // axis
+    for (int i = 0; i < 2; i++)
+    { // axis
         uint32_t axx = (uint32_t)((bsig >> 32 * i) & 0xffffffff);
         uint32_t coinc = evalCoincSingle(axx);
         //    if (bsig > (((uint64_t) 1) << 32)) { printf("%d %lx -> %x %x %x -> %x\n",i,bsig, axx,even,odd,coinc); }
@@ -205,53 +230,62 @@ std::vector<uint32_t> evalCoincidence(uint64_t bsig) {
     return vret;
 }
 
-inline std::unordered_map<int, int> runDelays = {{15, 0}, {16, 500}, {17, 1000}, {18, 1500}, {19, 2000}, {20, 2500}, {21, 3000}, {28, 3500}, {29, 4000}, {26, 3000}, {27, 1000}, {30, 10000}, {31, 0}, {44, 500}, {45, 2000}, {46, 10000}, {48, 10000}, {49, 2000}, {53, 2000}, {54, 2000}, {55, 0}, {56, 2000}, {57, 2000}, {58, 2000}};
+inline std::unordered_map<int, int> run_delays = {{15, 0}, {16, 500}, {17, 1000}, {18, 1500}, {19, 2000}, {20, 2500}, {21, 3000}, {28, 3500}, {29, 4000}, {26, 3000}, {27, 1000}, {30, 10000}, {31, 0}, {44, 500}, {45, 2000}, {46, 10000}, {48, 10000}, {49, 2000}, {53, 2000}, {54, 0}, {55, 500}, {56, 2000}, {57, 2000}, {58, 2000}};
 
-struct coinc_counter {
+struct coinc_counter
+{
     int run_n;
     int ns_delay;
+    int trig_n;
     int coinc_n;
     int double_coinc_n;
     int cross_coinc_n;
-    coinc_counter() : run_n(0), ns_delay(0), coinc_n(0), double_coinc_n(0), cross_coinc_n(0) {}
-    coinc_counter(int run_number, int gflash_delay_in_ns, int coincidences_n, int double_coincidences_n, int cross_coincidences_n) : run_n(run_number), ns_delay(gflash_delay_in_ns), coinc_n(coincidences_n), double_coinc_n(double_coincidences_n), cross_coinc_n(cross_coincidences_n) {}
+    coinc_counter() : run_n(0), ns_delay(0), trig_n(0), coinc_n(0), double_coinc_n(0), cross_coinc_n(0) {}
+    coinc_counter(int run_number, int gflash_delay_in_ns, int trigger_n, int coincidences_n, int double_coincidences_n, int cross_coincidences_n) : run_n(run_number), ns_delay(gflash_delay_in_ns), trig_n(trigger_n), coinc_n(coincidences_n), double_coinc_n(double_coincidences_n), cross_coinc_n(cross_coincidences_n) {}
 };
 /*
  * Collect summary data, generally from a run
  */
 
-class summaryList {
-  private:
+class summaryList
+{
+private:
     TList *iList; // list of integers
     TList *fList; // list of floats ... to be improved merging them
     TParameter<float> *fPar;
     TParameter<int> *iPar;
     std::vector<coinc_counter> counters;
 
-  public:
-    summaryList(TString name = "list") {
+public:
+    summaryList(TString name = "list")
+    {
         iList = new TList();
         fList = new TList();
         iList->SetName("int_" + name);
         fList->SetName("float_" + name);
     };
-    ~summaryList() {
-        if (iList != NULL) {
+    ~summaryList()
+    {
+        if (iList != NULL)
+        {
             delete iList;
             delete fList;
         }
     };
-    void resetLists() {
+    void resetLists()
+    {
         iList->Clear();
         fList->Clear();
     };
-    void addFloat(float val, TString name) {
+    void addFloat(float val, TString name)
+    {
         fPar = new TParameter<float>(name, val);
         fList->Add(fPar);
     };
     void addFloat(TParameter<float> *p) { fList->Add(p); };
 
-    void addInt(int val, TString name) {
+    void addInt(int val, TString name)
+    {
         iPar = new TParameter<int>(name, val);
         iList->Add(iPar);
     };
@@ -260,65 +294,83 @@ class summaryList {
     void add_counter(const coinc_counter &counter) { counters.push_back(counter); }
     const std::vector<coinc_counter> &get_counter() const { return counters; }
 
-    std::string getNames(int format = 0) { // 0=just space between names, 1=use TTree format
+    std::string getNames(int format = 0)
+    { // 0=just space between names, 1=use TTree format
         std::string rstring = "# ";
         std::string sform = " %s";
         if (format == 1)
             sform = " %s/I";
 
-        for (int i = 0; i < iList->GetSize(); i++) {
+        for (int i = 0; i < iList->GetSize(); i++)
+        {
             iPar = (TParameter<int> *)iList->At(i);
             rstring += Form(sform.data(), iPar->GetName());
-            if (format == 1) {
+            if (format == 1)
+            {
                 sform = ":%s/I";
             }
         }
         if (format == 1)
             sform = ":%s/F";
-        for (int i = 0; i < fList->GetSize(); i++) {
+        for (int i = 0; i < fList->GetSize(); i++)
+        {
             fPar = (TParameter<float> *)fList->At(i);
             rstring += Form(sform.data(), fPar->GetName());
         }
         return rstring;
     };
 
-    std::string getValues() {
+    std::string getValues()
+    {
         std::string rstring = " ";
-        for (int i = 0; i < iList->GetSize(); i++) {
+        for (int i = 0; i < iList->GetSize(); i++)
+        {
             iPar = (TParameter<int> *)iList->At(i);
             rstring += Form(" %d", iPar->GetVal());
         }
-        for (int i = 0; i < fList->GetSize(); i++) {
+        for (int i = 0; i < fList->GetSize(); i++)
+        {
             fPar = (TParameter<float> *)fList->At(i);
             rstring += Form(" %f", fPar->GetVal());
         }
         return rstring;
     };
 
-    TParameter<float> *getFloat(int idx) {
-        if (idx < fList->GetSize()) {
+    TParameter<float> *getFloat(int idx)
+    {
+        if (idx < fList->GetSize())
+        {
             return (TParameter<float> *)fList->At(idx);
-        } else {
+        }
+        else
+        {
             return NULL;
         }
     };
 
-    TParameter<int> *getInt(int idx) {
-        if (idx < iList->GetSize()) {
+    TParameter<int> *getInt(int idx)
+    {
+        if (idx < iList->GetSize())
+        {
             return (TParameter<int> *)iList->At(idx);
-        } else {
+        }
+        else
+        {
             return NULL;
         }
     }
 
-    void merge(summaryList *sl) {
+    void merge(summaryList *sl)
+    {
         int i = 0;
-        while ((fPar = sl->getFloat(i)) != NULL) {
+        while ((fPar = sl->getFloat(i)) != NULL)
+        {
             addFloat(fPar);
             i++;
         }
         i = 0;
-        while ((iPar = sl->getInt(i)) != NULL) {
+        while ((iPar = sl->getInt(i)) != NULL)
+        {
             addInt(iPar);
             i++;
         }
@@ -329,17 +381,19 @@ class summaryList {
  * This class do not work yet ...
  */
 
-class DAQpar : public TNamed { // public TObject {
+class DAQpar : public TNamed
+{ // public TObject {
 
-  private:
+private:
     int run_number;
     int acqmode;
     int histoch;
     float timebin; // [ns]
     TString start_time;
 
-  public:
-    DAQpar() { // const char *name, const char *title) {
+public:
+    DAQpar()
+    { // const char *name, const char *title) {
         //    this->SetName(name);
         //    this->SetTitme(title);
         run_number = -1;
@@ -351,44 +405,56 @@ class DAQpar : public TNamed { // public TObject {
 
     ~DAQpar(){};
 
-    int runNumber(int run = -1) {
-        if (run >= 0) {
+    int runNumber(int run = -1)
+    {
+        if (run >= 0)
+        {
             run_number = run;
         }
         return run_number;
     };
 
-    int acqMode(int acm = -1) {
-        if (acm >= 0) {
+    int acqMode(int acm = -1)
+    {
+        if (acm >= 0)
+        {
             acqmode = acm;
         }
         return acqmode;
     };
 
-    int histoChannels(int hc = -1) {
-        if (hc > 0) {
+    int histoChannels(int hc = -1)
+    {
+        if (hc > 0)
+        {
             histoch = hc;
         }
         return histoch;
     };
 
-    float timeBinWidth(float tb = -1) {
-        if (tb > 0) {
+    float timeBinWidth(float tb = -1)
+    {
+        if (tb > 0)
+        {
             timebin = tb;
         }
         return timebin;
     };
 
-    TString startTime(TString st = "") {
-        if (st.Length() > 0) {
+    TString startTime(TString st = "")
+    {
+        if (st.Length() > 0)
+        {
             start_time = st;
         }
         return start_time;
     };
 
     // overidd virtual
-    void Print(Option_t *opt = "") const override {
-        if (strcmp(opt, "") != 0) {
+    void Print(Option_t *opt = "") const override
+    {
+        if (strcmp(opt, "") != 0)
+        {
             std::cout << "Option " << opt << " will be ignored\n";
         }
         std::cout << "DAQ paramereters" << std::endl;
@@ -425,9 +491,10 @@ class manageChain() {
 /*
  *
  */
-class manageTree {
+class manageTree
+{
 
-  private:
+private:
     // Tree related variables
     TFile *fout;
     TTree *tlist;
@@ -456,8 +523,9 @@ class manageTree {
 
     TList *userlist;
 
-  public:
-    manageTree(TString sofile) {
+public:
+    manageTree(TString sofile)
+    {
         fout = new TFile(sofile, "recreate");
         tlist = new TTree("tlist", "Event Lists");
         countEvents = 0;
@@ -475,7 +543,8 @@ class manageTree {
         novt = 0;
     }
 
-    ~manageTree() {
+    ~manageTree()
+    {
         delete[] chan;
         delete[] lgain;
         delete[] hgain;
@@ -487,7 +556,8 @@ class manageTree {
         //    delete tlist;
     }
 
-    void allocBranches(int acqmode) { // 0: spectroscopy, 1: timing 2:spect_timing
+    void allocBranches(int acqmode)
+    { // 0: spectroscopy, 1: timing 2:spect_timing
 
         amode = acqmode;
 
@@ -496,14 +566,16 @@ class manageTree {
         tlist->Branch("novt", &novt, "novt/I"); // number of signals
         tlist->Branch("chan", chan, "chan[novt]/I");
 
-        if (amode != 1) {
+        if (amode != 1)
+        {
             tlist->Branch("lgain", lgain, "lgain[novt]/I");
             tlist->Branch("hgain", hgain, "hgain[novt]/I");
             tlist->Branch("xcen", xc, "xc[4]/D");
             tlist->Branch("ycen", yc, "yc[4]/D");
             tlist->Branch("charge", qt, "qt[4]/D");
         }
-        if (amode != 0) {
+        if (amode != 0)
+        {
             tlist->Branch("toa", toa, "toa[novt]/I");
             tlist->Branch("tot", tot, "tot[novt]/I");
         }
@@ -518,9 +590,11 @@ class manageTree {
     // return true if channel is masked
     bool isChannelMasked(int ch) { return (c2side(ch) == -1) ? true : false; };
 
-    void evalCentroids() {
+    void evalCentroids()
+    {
 
-        for (int i = 0; i < 64; i++) {
+        for (int i = 0; i < 64; i++)
+        {
             double charge = (double)hgain[i]; // single board @@@
             // if (charge>5000) printf(" ... still %d %d %f\n",i,hgain[i],charge);
             int cyc = c2side(i);
@@ -532,8 +606,10 @@ class manageTree {
             yc[cyc] += y * charge;
             qt[cyc] += charge;
         }
-        for (int j = 0; j < 4; j++) {
-            if (qt[j] > 0) {
+        for (int j = 0; j < 4; j++)
+        {
+            if (qt[j] > 0)
+            {
                 xc[j] = xc[j] / qt[j];
                 yc[j] = yc[j] / qt[j];
             }
@@ -542,42 +618,53 @@ class manageTree {
         return;
     };
 
-    void resetVars() {
+    void resetVars()
+    {
         novt = 0;
-        for (int j = 0; j < 4; j++) {
+        for (int j = 0; j < 4; j++)
+        {
             xc[j] = 0;
             yc[j] = 0;
             qt[j] = 0;
         }
     };
 
-    void setTimeTrg(float time, float trg) {
+    void setTimeTrg(float time, float trg)
+    {
         timeus = time;
         trgid = (int)trg;
     };
 
-    void setChannel(float board, float channel) {
-        if (novt >= max_sig) {
+    void setChannel(float board, float channel)
+    {
+        if (novt >= max_sig)
+        {
             printf("WARNING: number of signals/channels exceed current limit %d, no further signals considered\n", novt);
-        } else {
+        }
+        else
+        {
             chan[novt] = ((int)board) * 32 + ((int)channel);
             novt += 1;
         }
     };
 
-    void setADCs(float lgadc, float hgadc) {
+    void setADCs(float lgadc, float hgadc)
+    {
         lgain[novt - 1] = (int)lgadc;
         hgain[novt - 1] = (int)hgadc;
     };
 
-    void setTime(float toav, float totv) {
+    void setTime(float toav, float totv)
+    {
         toa[novt - 1] = (int)toav;
         tot[novt - 1] = (int)totv;
     };
 
-    void setVars(float *arr) {
+    void setVars(float *arr)
+    {
         setChannel(arr[0], arr[1]);
-        switch (amode) {
+        switch (amode)
+        {
         case 0: // spectroscopy
             setADCs(arr[2], arr[3]);
             break;
@@ -591,14 +678,17 @@ class manageTree {
         }
     };
 
-    void setBeamInfo(float pulse, float dtime) {
+    void setBeamInfo(float pulse, float dtime)
+    {
         beamPulse = pulse;
         beamDelta = dtime;
     };
 
-    int proFill() {
+    int proFill()
+    {
         //    printf(" fill %d %d %f\n",novt,chan[0], timeus);
-        if (novt <= 0) {
+        if (novt <= 0)
+        {
             return 0;
         }
         if ((amode % 2) == 0)
@@ -615,7 +705,8 @@ class manageTree {
     float timebin; // [ns]
     TString start_time;
 
-    void setUserData(int runnum, float timebin, int histoch, TString startime) {
+    void setUserData(int runnum, float timebin, int histoch, TString startime)
+    {
         userlist = (TList *)tlist->GetUserInfo();
         TParameter<int> *tp0 = new TParameter<int>("RunNumber", runnum);
         userlist->Add(tp0);
@@ -635,7 +726,8 @@ class manageTree {
 
     void Print() { printf(" Trg: %d at time [ms] %f\n", trgid, timeus / 1000); };
 
-    void Save() {
+    void Save()
+    {
         fout->Write();
         fout->Close();
     };
@@ -650,7 +742,8 @@ class manageTree {
   *
  */
 
-int parseListFile(int run, TString basepath, TString prefix = "/fers/Run", TString ntofRoot = "__NONE__") {
+int parseListFile(int run, TString basepath, TString prefix = "/fers/Run", TString ntofRoot = "__NONE__")
+{
 
     TString fname = basepath + prefix + Form("%d_list.txt", run);
     TString ntofRFile = basepath + ntofRoot;
@@ -659,7 +752,8 @@ int parseListFile(int run, TString basepath, TString prefix = "/fers/Run", TStri
 
     std::ifstream infile(fname.Data());
 
-    if (infile.fail()) {
+    if (infile.fail())
+    {
         printf("ERROR: file %s not found\n", fname.Data());
         return 0;
     }
@@ -697,17 +791,24 @@ int parseListFile(int run, TString basepath, TString prefix = "/fers/Run", TStri
 
     Long64_t sdati; // start data and time as unix time
 
-    while (line.ReadLine(infile)) {
+    while (line.ReadLine(infile))
+    {
         oa = NULL;
-        if (line.Index("//") >= 0) {      // parse Header
-            for (int j = 0; j < 4; j++) { // search relevant items
+        if (line.Index("//") >= 0)
+        { // parse Header
+            for (int j = 0; j < 4; j++)
+            { // search relevant items
                 int idx = line.Index(sitem[j]);
-                if (idx > 0) {
+                if (idx > 0)
+                {
                     sival[j] = line(idx + sitem[j].Length() + 1, 9999);
                     printf("  %s %s\n", sitem[j].Data(), sival[j].Data());
-                    if (j == 0) { // load acquisition mode
-                        for (int k = 0; k < 3; k++) {
-                            if (sival[j] == acqmode[k]) {
+                    if (j == 0)
+                    { // load acquisition mode
+                        for (int k = 0; k < 3; k++)
+                        {
+                            if (sival[j] == acqmode[k])
+                            {
                                 acqidx = k;
                                 ncols = acqcol[k];
                                 printf("  %s acquisition mode selected (%d) -> cols %d\n", sival[j].Data(), acqidx, ncols);
@@ -716,7 +817,8 @@ int parseListFile(int run, TString basepath, TString prefix = "/fers/Run", TStri
                             }
                         }
                     }
-                    if (j == 1) { // start time
+                    if (j == 1)
+                    { // start time
                         sdati = convertTime(sival[1]);
                         ntof->setStartDaTi(sdati);
                     }
@@ -734,22 +836,26 @@ int parseListFile(int run, TString basepath, TString prefix = "/fers/Run", TStri
         obs = (TObjString *)oa->First();
         ss = obs->GetString();
 
-        if (ss.IsFloat()) {                         // data
-            for (int i = (ntos - 1); i >= 0; i--) { // loop on token
+        if (ss.IsFloat())
+        { // data
+            for (int i = (ntos - 1); i >= 0; i--)
+            { // loop on token
                 TObjString *obsl = (TObjString *)oa->At(i);
                 TString ssl = obsl->GetString();
                 // ssl.ReplaceAll("\n","").ReplaceAll("\t","").ReplaceAll(" ","");
                 sscanf(ssl.Data(), "%f\n", &adummy[i]);
             }
             int nskip = 0;
-            if (ntos == ncols) { // new event with time and trigger id * depend on modality *
+            if (ntos == ncols)
+            { // new event with time and trigger id * depend on modality *
                 mT->proFill();
                 mT->setTimeTrg(adummy[0], adummy[1]);
 
                 std::vector<float> pulse = ntof->getBeamPulse(adummy[0]); // return beam pulse related to the time "adummy[0]"
                 mT->setBeamInfo(pulse[0], pulse[1]);
                 nskip = 2;
-                if ((counttrg % 1000) == 0) {
+                if ((counttrg % 1000) == 0)
+                {
                     printf("  parsed events so far: %d\n", counttrg);
                 }
                 counttrg += 1;
@@ -758,10 +864,13 @@ int parseListFile(int run, TString basepath, TString prefix = "/fers/Run", TStri
             //      int channel= (int) adummy[nskip+1];
 
             mT->setVars(&adummy[nskip]);
-        } else { // parameters names (before data)
+        }
+        else
+        { // parameters names (before data)
             spname = line;
             printf("  Par data Names: %s\n", spname.Data()); // first row of data contains the name of the variables
-            if (acqidx < 0) {
+            if (acqidx < 0)
+            {
                 printf("ERROR: acquisition mode %s is not supported\n", sival[0].Data());
                 return -1;
             }
@@ -797,22 +906,28 @@ int parseListFile(int run, TString basepath, TString prefix = "/fers/Run", TStri
  *
  */
 
-int checkAndConvertText2Root(TString basepath, std::vector<int> vrun, TString prefix = "/fers/Run", TString ntofRFile = "__NONE__") {
+int checkAndConvertText2Root(TString basepath, std::vector<int> vrun, TString prefix = "/fers/Run", TString ntofRFile = "__NONE__")
+{
 
     std::cout << "Check and parse text data if needed\n";
 
     int count = 0;
     // convert each ASCII file to root format if not yet done
-    for (uint i = 0; i != vrun.size(); ++i) {
-        if (vrun[i] >= 0) {
+    for (uint i = 0; i != vrun.size(); ++i)
+    {
+        if (vrun[i] >= 0)
+        {
             TString ifile = basepath + prefix + Form("%d.root", vrun[i]);
             TFile *fin = new TFile(ifile, "read");
-            if (fin->IsZombie()) {
+            if (fin->IsZombie())
+            {
                 // printf(" %d %s %s\n", vrun[i], basepath.Data(), ntofRFile.Data());
                 int nevt = parseListFile(vrun[i], basepath, prefix, ntofRFile);
                 if (nevt > 0)
                     ++count;
-            } else {
+            }
+            else
+            {
                 fin->Close();
             }
         }
