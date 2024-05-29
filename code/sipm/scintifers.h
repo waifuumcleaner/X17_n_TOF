@@ -243,6 +243,17 @@ struct coinc_counter
     coinc_counter() : run_n(0), ns_delay(0), trig_n(0), coinc_n(0), double_coinc_n(0), cross_coinc_n(0) {}
     coinc_counter(int run_number, int gflash_delay_in_ns, int trigger_n, int coincidences_n, int double_coincidences_n, int cross_coincidences_n) : run_n(run_number), ns_delay(gflash_delay_in_ns), trig_n(trigger_n), coinc_n(coincidences_n), double_coinc_n(double_coincidences_n), cross_coinc_n(cross_coincidences_n) {}
 };
+
+class coincidence_Info
+{
+private:
+    std::vector<coinc_counter> counters;
+
+public:
+    coincidence_Info() : counters(std::vector<coinc_counter>()) {}
+    void add_counter(const coinc_counter &counter) { counters.push_back(counter); }
+    const std::vector<coinc_counter> &get_counter() const { return counters; }
+};
 /*
  * Collect summary data, generally from a run
  */
@@ -290,9 +301,6 @@ public:
         iList->Add(iPar);
     };
     void addInt(TParameter<int> *p) { iList->Add(p); };
-
-    void add_counter(const coinc_counter &counter) { counters.push_back(counter); }
-    const std::vector<coinc_counter> &get_counter() const { return counters; }
 
     std::string getNames(int format = 0)
     { // 0=just space between names, 1=use TTree format

@@ -471,7 +471,7 @@ void cisbani_processing(TTree *tl, const float thr_toa, const int ntref, const i
 /*
 Plot all relevant information gathered in channelTimeProcess
 */
-void plot_timing_data(TH1F *h_time_diff, TH1F *h_coinc_per_trigger, TH2F *h_toa_corr, TH1F *h_toa, TGraph *tot_global_corr, TH1F *h_tot_prod, std::vector<TGraph *> &tot_corr_ch, TH2F *hxy_channels, TH2F *hxy_bars, TH2F *hxy_bars_toa, TH2F *hxy_bars_tot, TH2F *hxy_cross_bars, const float thr_toa, const int run_number)
+void plot_timing_data(TH1F *h_time_diff, TH1F *h_coinc_per_trigger, std::vector<TH1F *> dead_t_ch_even, std::vector<TH1F *> dead_t_ch_odd, TH2F *h_toa_corr, TH1F *h_toa, TGraph *tot_global_corr, TH1F *h_tot_prod, std::vector<TGraph *> &tot_corr_ch, TH2F *hxy_channels, TH2F *hxy_bars, TH2F *hxy_bars_toa, TH2F *hxy_bars_tot, TH2F *hxy_cross_bars, const float thr_toa, const int run_number)
 {
     TCanvas *cv_time_diff = new TCanvas("cv_time_diff", "Time differences canvas", 0, 0, 1920, 1000);
     h_time_diff->Draw("HIST");
@@ -488,6 +488,8 @@ void plot_timing_data(TH1F *h_time_diff, TH1F *h_coinc_per_trigger, TH2F *h_toa_
     // gPad->SetLogy();
     cv_time_diff->Update();
     cv_time_diff->SaveAs(Form("Run_%d/Run_%d_timediff.png", run_number, run_number));
+    delete h_time_diff;
+    delete cv_time_diff;
 
     TCanvas *cv_coinc_per_trigger = new TCanvas("cv_coinc_per_trigger", "Coincidences per trigger", 0, 0, 1920, 1000);
     h_coinc_per_trigger->Draw("HIST");
@@ -497,6 +499,44 @@ void plot_timing_data(TH1F *h_time_diff, TH1F *h_coinc_per_trigger, TH2F *h_toa_
     h_coinc_per_trigger->SetStats(kTRUE);
     cv_coinc_per_trigger->Update();
     cv_coinc_per_trigger->SaveAs(Form("Run_%d/Run_%d_coinc.png", run_number, run_number));
+    delete h_coinc_per_trigger;
+    delete cv_coinc_per_trigger;
+
+    TCanvas *cv_dead_t_even = new TCanvas("cv_dead_t_even", "Time between consecutives hit in a channel - right and bottom channels", 0, 0, 1920, 1000);
+    cv_dead_t_even->Divide(4, 4, 0.0001, 0.002);
+    for (int i = 0; i != 16; ++i)
+    {
+        cv_dead_t_even->cd(i + 1);
+        dead_t_ch_even[i]->SetFillColor(kBlue);
+        dead_t_ch_even[i]->SetLineColor(kBlack);
+        dead_t_ch_even[i]->SetLineWidth(2);
+        gPad->SetBottomMargin(0.15);
+        // gPad->SetLeftMargin(0.15);
+        dead_t_ch_even[i]->Draw("HIST");
+    }
+    cv_dead_t_even->Update();
+    cv_dead_t_even->SaveAs(Form("Run_%d/Run_%d_dead_time_even.png", run_number, run_number));
+    for (auto h : dead_t_ch_even)
+        delete h;
+    delete cv_dead_t_even;
+
+    TCanvas *cv_dead_t_odd = new TCanvas("cv_dead_t_odd", "Time between consecutives hit in a channel - left and top channels", 0, 0, 1920, 1000);
+    cv_dead_t_odd->Divide(4, 4, 0.0001, 0.002);
+    for (int i = 0; i != 16; ++i)
+    {
+        cv_dead_t_odd->cd(i + 1);
+        dead_t_ch_odd[i]->SetFillColor(kBlue);
+        dead_t_ch_odd[i]->SetLineColor(kBlack);
+        dead_t_ch_odd[i]->SetLineWidth(2);
+        gPad->SetBottomMargin(0.15);
+        // gPad->SetLeftMargin(0.15);
+        dead_t_ch_odd[i]->Draw("HIST");
+    }
+    cv_dead_t_odd->Update();
+    cv_dead_t_odd->SaveAs(Form("Run_%d/Run_%d_dead_time_odd.png", run_number, run_number));
+    for (auto h : dead_t_ch_odd)
+        delete h;
+    delete cv_dead_t_odd;
 
     TCanvas *cv_hit_toa = new TCanvas("cv_hit_toa", "Information from Time of Arrival", 0, 0, 2400, 1200);
     cv_hit_toa->SetMargin(0.12, 0.05, 0.15, 0.05);
@@ -553,6 +593,9 @@ void plot_timing_data(TH1F *h_time_diff, TH1F *h_coinc_per_trigger, TH2F *h_toa_
     cv_hit_toa->Modified();
     cv_hit_toa->SetSelected(cv_hit_toa);
     cv_hit_toa->SaveAs(Form("Run_%d/Run_%d_hit_toa.png", run_number, run_number));
+    delete h_toa_corr;
+    delete h_toa;
+    delete cv_hit_toa;
 
     TCanvas *cv_tot_info = new TCanvas("cv_tot_info", "Extracted information from Time over Threshold", 0, 0, 2400, 1200);
     cv_tot_info->SetMargin(0.12, 0.05, 0.15, 0.05);
@@ -624,6 +667,9 @@ void plot_timing_data(TH1F *h_time_diff, TH1F *h_coinc_per_trigger, TH2F *h_toa_
     cv_tot_info->Modified();
     cv_tot_info->SetSelected(cv_tot_info);
     cv_tot_info->SaveAs(Form("Run_%d/Run_%d_tot_info.png", run_number, run_number));
+    delete tot_global_corr;
+    delete h_tot_prod;
+    delete cv_tot_info;
 
     TCanvas *cv_tot_corr = new TCanvas("cv_tot_corr", "Time over Threshold correlation between channels", 0, 0, 1920, 1000);
     cv_tot_corr->Divide(3, 4, 0.0001, 0.002);
@@ -638,6 +684,9 @@ void plot_timing_data(TH1F *h_time_diff, TH1F *h_coinc_per_trigger, TH2F *h_toa_
     }
     cv_tot_corr->Update();
     cv_tot_corr->SaveAs(Form("Run_%d/Run_%d_tot_correlation.png", run_number, run_number));
+    for (auto h : tot_corr_ch)
+        delete h;
+    delete cv_tot_corr;
 
     TCanvas *cv_chan_coinc = new TCanvas("cv_chan_coinc", "Channel coincidences xy hit map", 0, 0, 1000, 1000);
     hxy_channels->Draw("colz text");
@@ -645,6 +694,8 @@ void plot_timing_data(TH1F *h_time_diff, TH1F *h_coinc_per_trigger, TH2F *h_toa_
     draw_square(cv_chan_coinc, "Channels");
     cv_chan_coinc->Update();
     cv_chan_coinc->SaveAs(Form("Run_%d/Run_%d_hxy_channels.png", run_number, run_number));
+    delete hxy_channels;
+    delete cv_chan_coinc;
 
     TCanvas *cv_bar_coinc = new TCanvas("cv_bar_coinc", "Scintillator bar coincidences xy hit map", 0, 0, 1000, 1000);
     hxy_bars->Draw("colz text");
@@ -652,6 +703,8 @@ void plot_timing_data(TH1F *h_time_diff, TH1F *h_coinc_per_trigger, TH2F *h_toa_
     draw_square(cv_bar_coinc, "Bars");
     cv_bar_coinc->Update();
     cv_bar_coinc->SaveAs(Form("Run_%d/Run_%d_hxy_bars.png", run_number, run_number));
+    delete hxy_bars;
+    delete cv_bar_coinc;
 
     TCanvas *cv_bar_coinc_toa = new TCanvas("cv_bar_coinc_toa", "Scintillator bar coincidences xy hit map using ToA", 0, 0, 1000, 1000);
     hxy_bars_toa->Draw("colz text");
@@ -659,6 +712,8 @@ void plot_timing_data(TH1F *h_time_diff, TH1F *h_coinc_per_trigger, TH2F *h_toa_
     draw_square(cv_bar_coinc_toa, "Bars");
     cv_bar_coinc_toa->Update();
     cv_bar_coinc_toa->SaveAs(Form("Run_%d/Run_%d_hxy_bars_toa.png", run_number, run_number));
+    delete hxy_bars_toa;
+    delete cv_bar_coinc_toa;
 
     TCanvas *cv_bar_coinc_tot = new TCanvas("cv_bar_coinc_tot", "Scintillator bar coincidences xy hit map using ToT", 0, 0, 1000, 1000);
     hxy_bars_tot->Draw("colz text");
@@ -666,6 +721,8 @@ void plot_timing_data(TH1F *h_time_diff, TH1F *h_coinc_per_trigger, TH2F *h_toa_
     draw_square(cv_bar_coinc_tot, "Bars");
     cv_bar_coinc_tot->Update();
     // cv_bar_coinc_tot->SaveAs(Form("Run_%d/Run_%d_hxy_bars_tot.png", run_number, run_number));
+    delete hxy_bars_tot;
+    delete cv_bar_coinc_tot;
 
     TCanvas *cv_bar_cross_coinc = new TCanvas("cv_bar_cross_coinc", "Scintillator bar cross coincidences xy hit map", 0, 0, 1000, 1000);
     hxy_cross_bars->Draw("colz text");
@@ -673,6 +730,8 @@ void plot_timing_data(TH1F *h_time_diff, TH1F *h_coinc_per_trigger, TH2F *h_toa_
     draw_square(cv_bar_cross_coinc, "Bars");
     cv_bar_cross_coinc->Update();
     cv_bar_cross_coinc->SaveAs(Form("Run_%d/Run_%d_hxy_cross_bars.png", run_number, run_number));
+    delete hxy_cross_bars;
+    delete cv_bar_cross_coinc;
 }
 /*
 Draws a red square around the crossing bars region in a canvas with xy hit map
@@ -939,7 +998,7 @@ void fill_xy_cross_scintibar(const int bar_index1, const int bar_index2, TH2F &x
     }
 }
 
-summaryList *channelTimeProcess(const int run_number, TTree *tl,
+summaryList *channelTimeProcess(const int run_number, TTree *tl, coincidence_Info &coinc_info,
                                 const float thr_toa = bar_time_width, // [ns]  time window for coincidence
                                 const float nsigma = 5., const std::vector<std::vector<float>> &vped = std::vector<std::vector<float>>())
 {
@@ -1030,8 +1089,23 @@ summaryList *channelTimeProcess(const int run_number, TTree *tl,
     int tottimediff = 0;
     int negtimediff = 0;
 
-    TH1F *h_coinc_per_trigger = new TH1F("h_coinc_per_trigger", "Coincidences per trigger", 5, 0, 5);
+    const int trg_rbin = run_delays.at(run_number) != 0 ? 5 : 25;
+    TH1F *h_coinc_per_trigger = new TH1F("h_coinc_per_trigger", "Coincidences per trigger", trg_rbin, 0, trg_rbin);
     h_coinc_per_trigger->GetXaxis()->SetTitle("# of coincidences per trigger");
+
+    std::vector<TH1F *> dead_t_ch_even(16); // For estimation of dead time in right and bottom channels
+    for (int i = 0; i != 16; ++i)
+    {
+        dead_t_ch_even[i] = new TH1F(Form("dead_t_even_ch_%d", i * 4), Form("Channel no. %d", i * 4), 10, 0, 5);
+        dead_t_ch_even[i]->GetXaxis()->SetTitle("Time diff [ns]");
+    }
+
+    std::vector<TH1F *> dead_t_ch_odd(16); // For estimation of dead time in right and bottom channels
+    for (int i = 0; i != 16; ++i)
+    {
+        dead_t_ch_odd[i] = new TH1F(Form("dead_t_odd_ch_%d", i * 4 + 1), Form("Channel no. %d", i * 4 + 1), 10, 0, 5);
+        dead_t_ch_odd[i]->GetXaxis()->SetTitle("Time diff [ns]");
+    }
 
     TH2F *h_toa_corr = new TH2F("h_toa_corr", "Time of Arrival correlation between coincidences", n_bar_portions * 1.5, 0., thr_toa / 1.9, n_bar_portions * 1.5, thr_toa / 2.2, thr_toa * 1.1);
     h_toa_corr->SetXTitle("t_{i} [ns]");
@@ -1130,6 +1204,12 @@ summaryList *channelTimeProcess(const int run_number, TTree *tl,
                 // se nella stessa finestra un canale vicino è stato colpito? Come
                 // gestisco poi la cosa?
                 int ch_j = channels_v[j];
+                if (ch_i == ch_j)
+                {
+                    float toa_j = toa_v[j] * 0.5; // *0.5 to have it in [ns]
+                    float time_difference = (toa_j - toa_i);
+                    ch_i % 2 == 0 ? dead_t_ch_even[ch_i / 4]->Fill(time_difference) : dead_t_ch_odd[ch_i / 4]->Fill(time_difference);
+                }
                 const int share_scintibar = check_couple_or_adjacent(ch_j, ch_i);
                 if (share_scintibar != -1) // Check if channels are a couple
                 {
@@ -1193,7 +1273,10 @@ summaryList *channelTimeProcess(const int run_number, TTree *tl,
                                     {
                                         // cross coincidence!
                                         ++bar_cross_coinc_counter;
-                                        std::cout << "\nCross coincidence found at trigger " << trigger_idx << " (timestamp " << timestamp << ") : scintibars " << bar_index << " and " << bar_index_k << " fired at " << hit_toa << " and " << hit_toa_k << " respectively\n\n";
+                                        if (run_delays.at(run_number) != 0)
+                                        {
+                                            std::cout << "\nCross coincidence found at trigger " << trigger_idx << " (timestamp " << timestamp << ") : scintibars " << bar_index << " and " << bar_index_k << " fired at " << hit_toa << " and " << hit_toa_k << " respectively\n\n";
+                                        }
                                         fill_xy_cross_scintibar(bar_index_k, bar_index, *hxy_cross_bars);
                                     }
                                 }
@@ -1220,7 +1303,7 @@ summaryList *channelTimeProcess(const int run_number, TTree *tl,
         // cisbani_processing(tl, thr_toa, ntref, trigger_idx, nsig, cv, hx, hy, hix, hiy, hxy);
     }
 
-    plot_timing_data(h_time_diff, h_coinc_per_trigger, h_toa_corr, h_toa, tot_global_corr, h_tot_prod, tot_corr_ch, hxy_channels, hxy_bars, hxy_bars_toa, hxy_bars_tot, hxy_cross_bars, thr_toa, run_number);
+    plot_timing_data(h_time_diff, h_coinc_per_trigger, dead_t_ch_even, dead_t_ch_odd, h_toa_corr, h_toa, tot_global_corr, h_tot_prod, tot_corr_ch, hxy_channels, hxy_bars, hxy_bars_toa, hxy_bars_tot, hxy_cross_bars, thr_toa, run_number);
 
     std::cout << "\nTotal anomalous negative time differences of this run: " << negtimediff << " out of " << tottimediff << " ( " << 100. * (float)negtimediff / (float)tottimediff << "% )\n";
     std::cout << std::setw(30) << std::left << "Total coincidences" << std::setw(30) << std::left << "Total double coincidences" << std::setw(30) << std::left << "Total cross coincidences" << "\n";
@@ -1229,8 +1312,7 @@ summaryList *channelTimeProcess(const int run_number, TTree *tl,
     //
     //
     coinc_counter counter(run_number, run_delays.at(run_number), ntref, bar_coinc_counter, bar_2coinc_counter, bar_cross_coinc_counter);
-    rpl->add_counter(counter);
-
+    coinc_info.add_counter(counter);
     // estimate rates
     float scale = 1. / ((float)ntref);
 
@@ -1610,10 +1692,10 @@ summaryList *processTEvents(const std::string basepath = "../../test_231020/data
             std::cout << ifile << '\n';
             ctlist->Add(ifile.c_str());
         }
-
+        coincidence_Info coinc_info;
         if (ctlist != NULL)
         {
-            spList = channelTimeProcess(srun[0], ctlist, time_window, nsigma, ped_v);
+            spList = channelTimeProcess(srun[0], ctlist, coinc_info, time_window, nsigma, ped_v);
             std::cout << "\n Run " << srun[0] << " analysis completed\n";
             for (uint i = 0; i < agd.size(); i++)
             {
@@ -1659,6 +1741,7 @@ void timing_analysis(const std::string basepath, const std::vector<int> sig_runs
     std::vector<std::vector<float>> ped_v = get_ToT_pedestal(active_chs, tot_default_rms, basepath, ped_runs);
 
     summaryList *summ_list = NULL;
+    coincidence_Info coinc_info;
     for (const int run_n : sig_runs)
     {
         const std::string run_filename = basepath + prefix + std::to_string(run_n) + ".root";
@@ -1669,30 +1752,31 @@ void timing_analysis(const std::string basepath, const std::vector<int> sig_runs
             exit(-1);
         }
         auto run_tree = root_file->Get<TTree>("tlist");
-        summ_list = channelTimeProcess(run_n, run_tree, time_window, tot_rms_n, ped_v);
+        summ_list = channelTimeProcess(run_n, run_tree, coinc_info, time_window, tot_rms_n, ped_v);
         std::cout << "\nRun " << run_n << " analysis completed\n";
         std::cout << summ_list->getNames() << '\n';
         std::cout << summ_list->getValues() << '\n';
     }
-    const std::vector<coinc_counter> coincidences = summ_list->get_counter();
+    const std::vector<coinc_counter> coincidences = coinc_info.get_counter();
 
     TH1F *h_coinc = new TH1F("h_coinc", "Coincidences distribution normalized to total triggers", 20, 0, 10000);
     h_coinc->GetXaxis()->SetTitle("Delay from #gamma flash [ns]");
-    h_coinc->GetYaxis()->SetTitle("coincidences / triggers");
+    h_coinc->GetYaxis()->SetTitle("100 * coincidences / triggers");
 
     TH1F *h_2coinc = new TH1F("h_2coinc", "Double coincidences distribution normalized to total triggers", 20, 0, 10000);
     h_2coinc->GetXaxis()->SetTitle("Delay from #gamma flash [ns]");
-    h_2coinc->GetYaxis()->SetTitle("coincidences / triggers");
+    h_2coinc->GetYaxis()->SetTitle("100 * coincidences / triggers");
 
     TH1F *h_xcoinc = new TH1F("h_xcoinc", "Cross coincidences distribution normalized to total triggers", 20, 0, 10000);
     h_xcoinc->GetXaxis()->SetTitle("Delay from #gamma flash [ns]");
-    h_xcoinc->GetYaxis()->SetTitle("coincidences / triggers");
+    h_xcoinc->GetYaxis()->SetTitle("100 * coincidences / triggers");
 
     for (const auto &counter : coincidences)
     {
-        h_coinc->Fill(counter.ns_delay, (float)counter.coinc_n / (float)counter.trig_n);
-        h_2coinc->Fill(counter.ns_delay, (float)counter.double_coinc_n / (float)counter.trig_n);
-        h_xcoinc->Fill(counter.ns_delay, (float)counter.cross_coinc_n / (float)counter.trig_n);
+        std::cout << "Run " << counter.run_n << ": " << counter.coinc_n << " coincidences among " << counter.trig_n << "triggers\n";
+        h_coinc->Fill(counter.ns_delay, 100 * (float)counter.coinc_n / (float)counter.trig_n);
+        h_2coinc->Fill(counter.ns_delay, 100 * (float)counter.double_coinc_n / (float)counter.trig_n);
+        h_xcoinc->Fill(counter.ns_delay, 100 * (float)counter.cross_coinc_n / (float)counter.trig_n);
     }
 
     TCanvas *cv_coinc = new TCanvas("cv_coinc", "Coincidences distribution", 800, 600);
@@ -1923,7 +2007,7 @@ int main()
         run_numbers.push_back(pair.first);
     }
     std::sort(run_numbers.begin(), run_numbers.end());*/
-    const std::vector<int> run_numbers = {15, 16, 17, 18, 19, 20, 21, 28, 29, 30};
+    const std::vector<int> run_numbers = {15, 16, 17, 18, 19, 20, 21, 28, 29}; //30 has 10000ns delay but very heavy file
     const std::vector<int> ped_run_numbers = {13, 22, 33};
 
     try
