@@ -1,11 +1,11 @@
 Check and parse text data if needed
- Parsed 0 (out of 10) text file and converted to root
+ Parsed 0 (out of 9) text file and converted to root
 Check and parse text data if needed
  Parsed 0 (out of 3) text file and converted to root
 
 Reading pedestal from root file . . .
 
-With 0.5 ns resolution on timing measurements, a scintillator bar can be divided in 5 sections -> x "resolution" using time of arrival information is 100 mm
+With 0.5 ns resolution on timing measurements, a scintillator bar can be divided in 20 sections -> x "resolution" using time of arrival information is 25 mm
 Total Acquisition time [s]: 8968.74
 Number of active SiPM channels from data: 31
 Total Reference Times (triggers) : 2067
@@ -49,9 +49,9 @@ Out of 31 channels, 21 have not enough entries to compute pedestals
 OBJ: TCut	CUT	(tot>=36.00 && chan == 0)||(tot>=50.93 && chan == 1)||(tot>=36.00 && chan == 4)||(tot>=62.00 && chan == 5)||(tot>=26.13 && chan == 8)||(tot>=31.97 && chan == 9)||(tot>=26.85 && chan == 12)||(tot>=36.00 && chan == 13)||(tot>=36.00 && chan == 16)||(tot>=36.00 && chan == 17)||(tot>=36.00 && chan == 20)||(tot>=36.00 && chan == 21)||(tot>=36.00 && chan == 24)||(tot>=36.00 && chan == 25)||(tot>=37.00 && chan == 28)||(tot>=34.47 && chan == 32)||(tot>=52.57 && chan == 33)||(tot>=36.00 && chan == 36)||(tot>=36.00 && chan == 37)||(tot>=36.00 && chan == 40)||(tot>=36.00 && chan == 41)||(tot>=36.00 && chan == 44)||(tot>=36.00 && chan == 45)||(tot>=36.00 && chan == 48)||(tot>=36.00 && chan == 49)||(tot>=36.00 && chan == 52)||(tot>=36.00 && chan == 53)||(tot>=36.00 && chan == 56)||(tot>=36.00 && chan == 57)||(tot>=39.01 && chan == 60)||(tot>=40.52 && chan == 61)
 N. of ToT signals over threshold: 94346 out of 114397 total signals ( 82% ) 
 
-Total anomalous negative time differences of this run: 139916 out of 160686 ( 87.0742% )
+Total anomalous negative time differences of this run: 114186 out of 160686 ( 71.0616% )
 Total coincidences            Total double coincidences     Total cross coincidences      
-18495                         42360                         13300                         
+44225                         423260                        207445                        
 Statistics:     xy      x      y
 Sum of signals: 0.0000 0.0000 0.0000
 Signal/Trigger: 0.0000 0.0000 0.0000
@@ -61,7 +61,7 @@ Run 15 analysis completed
 #  NEntries AcqTime_s xCoinc[0] xCoinc[1] xCoinc[2] xCoinc[3] xCoinc[4] xCoinc[5] xCoinc[6] xCoinc[7] yCoinc[0] yCoinc[1] yCoinc[2] yCoinc[3] yCoinc[4] yCoinc[5] yCoinc[6] yCoinc[7]
   2067 8968.736328 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000
 
-With 0.5 ns resolution on timing measurements, a scintillator bar can be divided in 5 sections -> x "resolution" using time of arrival information is 100 mm
+With 0.5 ns resolution on timing measurements, a scintillator bar can be divided in 20 sections -> x "resolution" using time of arrival information is 25 mm
 Total Acquisition time [s]: 13324.7
 Number of active SiPM channels from data: 31
 Total Reference Times (triggers) : 2631
@@ -105,9 +105,45 @@ Out of 31 channels, 21 have not enough entries to compute pedestals
 OBJ: TCut	CUT	(tot>=36.00 && chan == 0)||(tot>=50.93 && chan == 1)||(tot>=36.00 && chan == 4)||(tot>=62.00 && chan == 5)||(tot>=26.13 && chan == 8)||(tot>=31.97 && chan == 9)||(tot>=26.85 && chan == 12)||(tot>=36.00 && chan == 13)||(tot>=36.00 && chan == 16)||(tot>=36.00 && chan == 17)||(tot>=36.00 && chan == 20)||(tot>=36.00 && chan == 21)||(tot>=36.00 && chan == 24)||(tot>=36.00 && chan == 25)||(tot>=37.00 && chan == 28)||(tot>=34.47 && chan == 32)||(tot>=52.57 && chan == 33)||(tot>=36.00 && chan == 36)||(tot>=36.00 && chan == 37)||(tot>=36.00 && chan == 40)||(tot>=36.00 && chan == 41)||(tot>=36.00 && chan == 44)||(tot>=36.00 && chan == 45)||(tot>=36.00 && chan == 48)||(tot>=36.00 && chan == 49)||(tot>=36.00 && chan == 52)||(tot>=36.00 && chan == 53)||(tot>=36.00 && chan == 56)||(tot>=36.00 && chan == 57)||(tot>=39.01 && chan == 60)||(tot>=40.52 && chan == 61)
 N. of ToT signals over threshold: 76647 out of 100116 total signals ( 76% ) 
 
-Total anomalous negative time differences of this run: 90179 out of 93153 ( 96.8074% )
+Cross coincidence found at trigger 75 (timestamp 3.9308e+08) : scintibars 10 and 2 fired at 1341 and 1346.5 respectively
+
+
+Cross coincidence found at trigger 75 (timestamp 3.9308e+08) : scintibars 11 and 2 fired at 1341 and 1346.5 respectively
+
+
+Cross coincidence found at trigger 111 (timestamp 5.82243e+08) : scintibars 6 and 4 fired at 2159.5 and 2150.5 respectively
+
+
+Cross coincidence found at trigger 129 (timestamp 6.75843e+08) : scintibars 2 and 10 fired at 7627 and 7630.75 respectively
+
+
+Cross coincidence found at trigger 129 (timestamp 6.75843e+08) : scintibars 2 and 10 fired at 7627 and 7628.5 respectively
+
+
+Cross coincidence found at trigger 605 (timestamp 3.15262e+09) : scintibars 2 and 9 fired at 12588.7 and 12592.5 respectively
+
+
+Cross coincidence found at trigger 1196 (timestamp 6.24433e+09) : scintibars 10 and 2 fired at 1342.25 and 1348 respectively
+
+
+Cross coincidence found at trigger 1975 (timestamp 1.03502e+10) : scintibars 11 and 2 fired at 1341 and 1345.25 respectively
+
+
+Cross coincidence found at trigger 2196 (timestamp 1.14866e+10) : scintibars 2 and 10 fired at 3539 and 3543.75 respectively
+
+
+Cross coincidence found at trigger 2196 (timestamp 1.14866e+10) : scintibars 2 and 10 fired at 3539 and 3544 respectively
+
+
+Cross coincidence found at trigger 2196 (timestamp 1.14866e+10) : scintibars 2 and 10 fired at 3539 and 3543.25 respectively
+
+
+Cross coincidence found at trigger 2196 (timestamp 1.14866e+10) : scintibars 2 and 10 fired at 3539 and 3543.5 respectively
+
+
+Total anomalous negative time differences of this run: 89561 out of 93153 ( 96.144% )
 Total coincidences            Total double coincidences     Total cross coincidences      
-377                           34                            0                             
+995                           173                           12                            
 Statistics:     xy      x      y
 Sum of signals: 0.0000 0.0000 0.0000
 Signal/Trigger: 0.0000 0.0000 0.0000
@@ -117,7 +153,7 @@ Run 16 analysis completed
 #  NEntries AcqTime_s xCoinc[0] xCoinc[1] xCoinc[2] xCoinc[3] xCoinc[4] xCoinc[5] xCoinc[6] xCoinc[7] yCoinc[0] yCoinc[1] yCoinc[2] yCoinc[3] yCoinc[4] yCoinc[5] yCoinc[6] yCoinc[7]
   2631 13324.705078 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000
 
-With 0.5 ns resolution on timing measurements, a scintillator bar can be divided in 5 sections -> x "resolution" using time of arrival information is 100 mm
+With 0.5 ns resolution on timing measurements, a scintillator bar can be divided in 20 sections -> x "resolution" using time of arrival information is 25 mm
 Total Acquisition time [s]: 5049.56
 Number of active SiPM channels from data: 31
 Total Reference Times (triggers) : 1510
@@ -161,33 +197,48 @@ Out of 31 channels, 21 have not enough entries to compute pedestals
 OBJ: TCut	CUT	(tot>=36.00 && chan == 0)||(tot>=50.93 && chan == 1)||(tot>=36.00 && chan == 4)||(tot>=62.00 && chan == 5)||(tot>=26.13 && chan == 8)||(tot>=31.97 && chan == 9)||(tot>=26.85 && chan == 12)||(tot>=36.00 && chan == 13)||(tot>=36.00 && chan == 16)||(tot>=36.00 && chan == 17)||(tot>=36.00 && chan == 20)||(tot>=36.00 && chan == 21)||(tot>=36.00 && chan == 24)||(tot>=36.00 && chan == 25)||(tot>=37.00 && chan == 28)||(tot>=34.47 && chan == 32)||(tot>=52.57 && chan == 33)||(tot>=36.00 && chan == 36)||(tot>=36.00 && chan == 37)||(tot>=36.00 && chan == 40)||(tot>=36.00 && chan == 41)||(tot>=36.00 && chan == 44)||(tot>=36.00 && chan == 45)||(tot>=36.00 && chan == 48)||(tot>=36.00 && chan == 49)||(tot>=36.00 && chan == 52)||(tot>=36.00 && chan == 53)||(tot>=36.00 && chan == 56)||(tot>=36.00 && chan == 57)||(tot>=39.01 && chan == 60)||(tot>=40.52 && chan == 61)
 N. of ToT signals over threshold: 31525 out of 40337 total signals ( 78% ) 
 
-Cross coincidence found at trigger 499 (timestamp 1.72117e+09) : scintibars 6 and 0 fired at 843.999 and 842.499 respectively
+Cross coincidence found at trigger 499 (timestamp 1.72117e+09) : scintibars 6 and 4 fired at 840.247 and 838.747 respectively
 
 
-Cross coincidence found at trigger 499 (timestamp 1.72117e+09) : scintibars 6 and 0 fired at 843.999 and 843.249 respectively
+Cross coincidence found at trigger 499 (timestamp 1.72117e+09) : scintibars 6 and 4 fired at 840.247 and 838.997 respectively
 
 
-Cross coincidence found at trigger 499 (timestamp 1.72117e+09) : scintibars 6 and 1 fired at 843.999 and 844.999 respectively
+Cross coincidence found at trigger 499 (timestamp 1.72117e+09) : scintibars 6 and 0 fired at 840.247 and 838.747 respectively
 
 
-Cross coincidence found at trigger 499 (timestamp 1.72117e+09) : scintibars 6 and 5 fired at 843.999 and 844.249 respectively
+Cross coincidence found at trigger 499 (timestamp 1.72117e+09) : scintibars 6 and 0 fired at 840.247 and 839.497 respectively
 
 
-Cross coincidence found at trigger 672 (timestamp 2.29808e+09) : scintibars 6 and 2 fired at 841.999 and 843.749 respectively
+Cross coincidence found at trigger 499 (timestamp 1.72117e+09) : scintibars 6 and 1 fired at 840.247 and 841.247 respectively
 
 
-Cross coincidence found at trigger 672 (timestamp 2.29808e+09) : scintibars 6 and 1 fired at 841.999 and 844.249 respectively
+Cross coincidence found at trigger 499 (timestamp 1.72117e+09) : scintibars 6 and 5 fired at 840.247 and 840.497 respectively
 
 
-Cross coincidence found at trigger 889 (timestamp 3.02151e+09) : scintibars 10 and 4 fired at 13639 and 13639.2 respectively
+Cross coincidence found at trigger 499 (timestamp 1.72117e+09) : scintibars 6 and 2 fired at 840.247 and 843.997 respectively
 
 
-Cross coincidence found at trigger 889 (timestamp 3.02151e+09) : scintibars 10 and 4 fired at 13639 and 13639.2 respectively
+Cross coincidence found at trigger 672 (timestamp 2.29808e+09) : scintibars 6 and 2 fired at 838.247 and 839.997 respectively
 
 
-Total anomalous negative time differences of this run: 38673 out of 41668 ( 92.8122% )
+Cross coincidence found at trigger 672 (timestamp 2.29808e+09) : scintibars 6 and 1 fired at 838.247 and 840.497 respectively
+
+
+Cross coincidence found at trigger 889 (timestamp 3.02151e+09) : scintibars 10 and 4 fired at 13635.2 and 13635.5 respectively
+
+
+Cross coincidence found at trigger 889 (timestamp 3.02151e+09) : scintibars 10 and 4 fired at 13635.2 and 13635.5 respectively
+
+
+Cross coincidence found at trigger 1218 (timestamp 4.12034e+09) : scintibars 6 and 2 fired at 889.997 and 887.997 respectively
+
+
+Cross coincidence found at trigger 1446 (timestamp 4.8452e+09) : scintibars 5 and 10 fired at 842.247 and 838.247 respectively
+
+
+Total anomalous negative time differences of this run: 38449 out of 41668 ( 92.2746% )
 Total coincidences            Total double coincidences     Total cross coincidences      
-194                           37                            8                             
+418                           125                           13                            
 Statistics:     xy      x      y
 Sum of signals: 0.0000 0.0000 0.0000
 Signal/Trigger: 0.0000 0.0000 0.0000
@@ -197,7 +248,7 @@ Run 17 analysis completed
 #  NEntries AcqTime_s xCoinc[0] xCoinc[1] xCoinc[2] xCoinc[3] xCoinc[4] xCoinc[5] xCoinc[6] xCoinc[7] yCoinc[0] yCoinc[1] yCoinc[2] yCoinc[3] yCoinc[4] yCoinc[5] yCoinc[6] yCoinc[7]
   1510 5049.563965 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000
 
-With 0.5 ns resolution on timing measurements, a scintillator bar can be divided in 5 sections -> x "resolution" using time of arrival information is 100 mm
+With 0.5 ns resolution on timing measurements, a scintillator bar can be divided in 20 sections -> x "resolution" using time of arrival information is 25 mm
 Total Acquisition time [s]: 10148.3
 Number of active SiPM channels from data: 31
 Total Reference Times (triggers) : 2756
@@ -241,12 +292,18 @@ Out of 31 channels, 21 have not enough entries to compute pedestals
 OBJ: TCut	CUT	(tot>=36.00 && chan == 0)||(tot>=50.93 && chan == 1)||(tot>=36.00 && chan == 4)||(tot>=62.00 && chan == 5)||(tot>=26.13 && chan == 8)||(tot>=31.97 && chan == 9)||(tot>=26.85 && chan == 12)||(tot>=36.00 && chan == 13)||(tot>=36.00 && chan == 16)||(tot>=36.00 && chan == 17)||(tot>=36.00 && chan == 20)||(tot>=36.00 && chan == 21)||(tot>=36.00 && chan == 24)||(tot>=36.00 && chan == 25)||(tot>=37.00 && chan == 28)||(tot>=34.47 && chan == 32)||(tot>=52.57 && chan == 33)||(tot>=36.00 && chan == 36)||(tot>=36.00 && chan == 37)||(tot>=36.00 && chan == 40)||(tot>=36.00 && chan == 41)||(tot>=36.00 && chan == 44)||(tot>=36.00 && chan == 45)||(tot>=36.00 && chan == 48)||(tot>=36.00 && chan == 49)||(tot>=36.00 && chan == 52)||(tot>=36.00 && chan == 53)||(tot>=36.00 && chan == 56)||(tot>=36.00 && chan == 57)||(tot>=39.01 && chan == 60)||(tot>=40.52 && chan == 61)
 N. of ToT signals over threshold: 43835 out of 55099 total signals ( 79% ) 
 
-Cross coincidence found at trigger 968 (timestamp 3.56696e+09) : scintibars 10 and 2 fired at 488.499 and 487.249 respectively
+Cross coincidence found at trigger 91 (timestamp 3.01979e+08) : scintibars 3 and 7 fired at 11281 and 11286.7 respectively
 
 
-Total anomalous negative time differences of this run: 50314 out of 57006 ( 88.2609% )
+Cross coincidence found at trigger 843 (timestamp 3.13876e+09) : scintibars 4 and 7 fired at 12644.5 and 12639 respectively
+
+
+Cross coincidence found at trigger 968 (timestamp 3.56696e+09) : scintibars 10 and 2 fired at 484.747 and 483.497 respectively
+
+
+Total anomalous negative time differences of this run: 50010 out of 57006 ( 87.7276% )
 Total coincidences            Total double coincidences     Total cross coincidences      
-291                           50                            1                             
+595                           165                           3                             
 Statistics:     xy      x      y
 Sum of signals: 0.0000 0.0000 0.0000
 Signal/Trigger: 0.0000 0.0000 0.0000
@@ -256,7 +313,7 @@ Run 18 analysis completed
 #  NEntries AcqTime_s xCoinc[0] xCoinc[1] xCoinc[2] xCoinc[3] xCoinc[4] xCoinc[5] xCoinc[6] xCoinc[7] yCoinc[0] yCoinc[1] yCoinc[2] yCoinc[3] yCoinc[4] yCoinc[5] yCoinc[6] yCoinc[7]
   2756 10148.328125 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000
 
-With 0.5 ns resolution on timing measurements, a scintillator bar can be divided in 5 sections -> x "resolution" using time of arrival information is 100 mm
+With 0.5 ns resolution on timing measurements, a scintillator bar can be divided in 20 sections -> x "resolution" using time of arrival information is 25 mm
 Total Acquisition time [s]: 9561.53
 Number of active SiPM channels from data: 31
 Total Reference Times (triggers) : 2748
@@ -300,21 +357,63 @@ Out of 31 channels, 21 have not enough entries to compute pedestals
 OBJ: TCut	CUT	(tot>=36.00 && chan == 0)||(tot>=50.93 && chan == 1)||(tot>=36.00 && chan == 4)||(tot>=62.00 && chan == 5)||(tot>=26.13 && chan == 8)||(tot>=31.97 && chan == 9)||(tot>=26.85 && chan == 12)||(tot>=36.00 && chan == 13)||(tot>=36.00 && chan == 16)||(tot>=36.00 && chan == 17)||(tot>=36.00 && chan == 20)||(tot>=36.00 && chan == 21)||(tot>=36.00 && chan == 24)||(tot>=36.00 && chan == 25)||(tot>=37.00 && chan == 28)||(tot>=34.47 && chan == 32)||(tot>=52.57 && chan == 33)||(tot>=36.00 && chan == 36)||(tot>=36.00 && chan == 37)||(tot>=36.00 && chan == 40)||(tot>=36.00 && chan == 41)||(tot>=36.00 && chan == 44)||(tot>=36.00 && chan == 45)||(tot>=36.00 && chan == 48)||(tot>=36.00 && chan == 49)||(tot>=36.00 && chan == 52)||(tot>=36.00 && chan == 53)||(tot>=36.00 && chan == 56)||(tot>=36.00 && chan == 57)||(tot>=39.01 && chan == 60)||(tot>=40.52 && chan == 61)
 N. of ToT signals over threshold: 42918 out of 52961 total signals ( 81% ) 
 
-Cross coincidence found at trigger 1687 (timestamp 6.07647e+09) : scintibars 4 and 9 fired at 21223 and 21224 respectively
+Cross coincidence found at trigger 155 (timestamp 6.15314e+08) : scintibars 7 and 1 fired at 6323 and 6326.5 respectively
 
 
-Cross coincidence found at trigger 1687 (timestamp 6.07647e+09) : scintibars 4 and 9 fired at 21223 and 21224 respectively
+Cross coincidence found at trigger 695 (timestamp 2.7357e+09) : scintibars 2 and 10 fired at 7030.25 and 7033.25 respectively
 
 
-Cross coincidence found at trigger 1687 (timestamp 6.07647e+09) : scintibars 4 and 9 fired at 21224.5 and 21224 respectively
+Cross coincidence found at trigger 695 (timestamp 2.7357e+09) : scintibars 10 and 2 fired at 7034.75 and 7030.25 respectively
 
 
-Cross coincidence found at trigger 1687 (timestamp 6.07647e+09) : scintibars 4 and 9 fired at 21224.5 and 21224 respectively
+Cross coincidence found at trigger 1286 (timestamp 4.74777e+09) : scintibars 2 and 11 fired at 30.2465 and 27.4965 respectively
 
 
-Total anomalous negative time differences of this run: 50069 out of 58490 ( 85.6027% )
+Cross coincidence found at trigger 1687 (timestamp 6.07647e+09) : scintibars 4 and 9 fired at 21219.2 and 21220.2 respectively
+
+
+Cross coincidence found at trigger 1687 (timestamp 6.07647e+09) : scintibars 4 and 10 fired at 21219.2 and 21221.7 respectively
+
+
+Cross coincidence found at trigger 1687 (timestamp 6.07647e+09) : scintibars 4 and 9 fired at 21219.2 and 21220.2 respectively
+
+
+Cross coincidence found at trigger 1687 (timestamp 6.07647e+09) : scintibars 4 and 10 fired at 21219.2 and 21221.7 respectively
+
+
+Cross coincidence found at trigger 1687 (timestamp 6.07647e+09) : scintibars 4 and 9 fired at 21220.7 and 21220.2 respectively
+
+
+Cross coincidence found at trigger 1687 (timestamp 6.07647e+09) : scintibars 4 and 10 fired at 21220.7 and 21221.7 respectively
+
+
+Cross coincidence found at trigger 1687 (timestamp 6.07647e+09) : scintibars 9 and 4 fired at 21220.5 and 21219.2 respectively
+
+
+Cross coincidence found at trigger 1687 (timestamp 6.07647e+09) : scintibars 9 and 4 fired at 21220.5 and 21219.2 respectively
+
+
+Cross coincidence found at trigger 1687 (timestamp 6.07647e+09) : scintibars 9 and 4 fired at 21220.5 and 21220.7 respectively
+
+
+Cross coincidence found at trigger 1687 (timestamp 6.07647e+09) : scintibars 4 and 9 fired at 21220.7 and 21220.2 respectively
+
+
+Cross coincidence found at trigger 1687 (timestamp 6.07647e+09) : scintibars 4 and 10 fired at 21220.7 and 21221.7 respectively
+
+
+Cross coincidence found at trigger 1687 (timestamp 6.07647e+09) : scintibars 4 and 9 fired at 21220.7 and 21220.5 respectively
+
+
+Cross coincidence found at trigger 2362 (timestamp 8.30211e+09) : scintibars 11 and 2 fired at 26.4965 and 29.2465 respectively
+
+
+Cross coincidence found at trigger 2664 (timestamp 9.30205e+09) : scintibars 6 and 0 fired at 8631.75 and 8634.5 respectively
+
+
+Total anomalous negative time differences of this run: 49759 out of 58490 ( 85.0727% )
 Total coincidences            Total double coincidences     Total cross coincidences      
-313                           52                            4                             
+623                           156                           18                            
 Statistics:     xy      x      y
 Sum of signals: 0.0000 0.0000 0.0000
 Signal/Trigger: 0.0000 0.0000 0.0000
@@ -324,7 +423,7 @@ Run 19 analysis completed
 #  NEntries AcqTime_s xCoinc[0] xCoinc[1] xCoinc[2] xCoinc[3] xCoinc[4] xCoinc[5] xCoinc[6] xCoinc[7] yCoinc[0] yCoinc[1] yCoinc[2] yCoinc[3] yCoinc[4] yCoinc[5] yCoinc[6] yCoinc[7]
   2748 9561.532227 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000
 
-With 0.5 ns resolution on timing measurements, a scintillator bar can be divided in 5 sections -> x "resolution" using time of arrival information is 100 mm
+With 0.5 ns resolution on timing measurements, a scintillator bar can be divided in 20 sections -> x "resolution" using time of arrival information is 25 mm
 Total Acquisition time [s]: 8620.74
 Number of active SiPM channels from data: 31
 Total Reference Times (triggers) : 2547
@@ -368,15 +467,36 @@ Out of 31 channels, 21 have not enough entries to compute pedestals
 OBJ: TCut	CUT	(tot>=36.00 && chan == 0)||(tot>=50.93 && chan == 1)||(tot>=36.00 && chan == 4)||(tot>=62.00 && chan == 5)||(tot>=26.13 && chan == 8)||(tot>=31.97 && chan == 9)||(tot>=26.85 && chan == 12)||(tot>=36.00 && chan == 13)||(tot>=36.00 && chan == 16)||(tot>=36.00 && chan == 17)||(tot>=36.00 && chan == 20)||(tot>=36.00 && chan == 21)||(tot>=36.00 && chan == 24)||(tot>=36.00 && chan == 25)||(tot>=37.00 && chan == 28)||(tot>=34.47 && chan == 32)||(tot>=52.57 && chan == 33)||(tot>=36.00 && chan == 36)||(tot>=36.00 && chan == 37)||(tot>=36.00 && chan == 40)||(tot>=36.00 && chan == 41)||(tot>=36.00 && chan == 44)||(tot>=36.00 && chan == 45)||(tot>=36.00 && chan == 48)||(tot>=36.00 && chan == 49)||(tot>=36.00 && chan == 52)||(tot>=36.00 && chan == 53)||(tot>=36.00 && chan == 56)||(tot>=36.00 && chan == 57)||(tot>=39.01 && chan == 60)||(tot>=40.52 && chan == 61)
 N. of ToT signals over threshold: 41843 out of 50662 total signals ( 82% ) 
 
-Cross coincidence found at trigger 1798 (timestamp 6.0886e+09) : scintibars 7 and 4 fired at 5874.5 and 5873.5 respectively
+Cross coincidence found at trigger 162 (timestamp 5.31436e+08) : scintibars 7 and 1 fired at 2127.25 and 2123.25 respectively
 
 
-Cross coincidence found at trigger 1798 (timestamp 6.0886e+09) : scintibars 7 and 4 fired at 5874.5 and 5873.5 respectively
+Cross coincidence found at trigger 162 (timestamp 5.31436e+08) : scintibars 7 and 1 fired at 2127.25 and 2126.5 respectively
 
 
-Total anomalous negative time differences of this run: 49672 out of 59204 ( 83.8997% )
+Cross coincidence found at trigger 162 (timestamp 5.31436e+08) : scintibars 7 and 1 fired at 2127.25 and 2123.25 respectively
+
+
+Cross coincidence found at trigger 162 (timestamp 5.31436e+08) : scintibars 7 and 1 fired at 2127.25 and 2126.5 respectively
+
+
+Cross coincidence found at trigger 369 (timestamp 1.24303e+09) : scintibars 2 and 10 fired at 5815.5 and 5807.5 respectively
+
+
+Cross coincidence found at trigger 1798 (timestamp 6.0886e+09) : scintibars 7 and 4 fired at 5870.75 and 5869.75 respectively
+
+
+Cross coincidence found at trigger 1798 (timestamp 6.0886e+09) : scintibars 7 and 4 fired at 5870.75 and 5870.75 respectively
+
+
+Cross coincidence found at trigger 1798 (timestamp 6.0886e+09) : scintibars 7 and 4 fired at 5870.75 and 5869.75 respectively
+
+
+Cross coincidence found at trigger 1798 (timestamp 6.0886e+09) : scintibars 7 and 4 fired at 5870.75 and 5870.75 respectively
+
+
+Total anomalous negative time differences of this run: 49308 out of 59204 ( 83.2849% )
 Total coincidences            Total double coincidences     Total cross coincidences      
-315                           72                            2                             
+679                           213                           9                             
 Statistics:     xy      x      y
 Sum of signals: 0.0000 0.0000 0.0000
 Signal/Trigger: 0.0000 0.0000 0.0000
@@ -386,7 +506,7 @@ Run 20 analysis completed
 #  NEntries AcqTime_s xCoinc[0] xCoinc[1] xCoinc[2] xCoinc[3] xCoinc[4] xCoinc[5] xCoinc[6] xCoinc[7] yCoinc[0] yCoinc[1] yCoinc[2] yCoinc[3] yCoinc[4] yCoinc[5] yCoinc[6] yCoinc[7]
   2547 8620.738281 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000
 
-With 0.5 ns resolution on timing measurements, a scintillator bar can be divided in 5 sections -> x "resolution" using time of arrival information is 100 mm
+With 0.5 ns resolution on timing measurements, a scintillator bar can be divided in 20 sections -> x "resolution" using time of arrival information is 25 mm
 Total Acquisition time [s]: 10454.3
 Number of active SiPM channels from data: 31
 Total Reference Times (triggers) : 2465
@@ -430,12 +550,48 @@ Out of 31 channels, 21 have not enough entries to compute pedestals
 OBJ: TCut	CUT	(tot>=36.00 && chan == 0)||(tot>=50.93 && chan == 1)||(tot>=36.00 && chan == 4)||(tot>=62.00 && chan == 5)||(tot>=26.13 && chan == 8)||(tot>=31.97 && chan == 9)||(tot>=26.85 && chan == 12)||(tot>=36.00 && chan == 13)||(tot>=36.00 && chan == 16)||(tot>=36.00 && chan == 17)||(tot>=36.00 && chan == 20)||(tot>=36.00 && chan == 21)||(tot>=36.00 && chan == 24)||(tot>=36.00 && chan == 25)||(tot>=37.00 && chan == 28)||(tot>=34.47 && chan == 32)||(tot>=52.57 && chan == 33)||(tot>=36.00 && chan == 36)||(tot>=36.00 && chan == 37)||(tot>=36.00 && chan == 40)||(tot>=36.00 && chan == 41)||(tot>=36.00 && chan == 44)||(tot>=36.00 && chan == 45)||(tot>=36.00 && chan == 48)||(tot>=36.00 && chan == 49)||(tot>=36.00 && chan == 52)||(tot>=36.00 && chan == 53)||(tot>=36.00 && chan == 56)||(tot>=36.00 && chan == 57)||(tot>=39.01 && chan == 60)||(tot>=40.52 && chan == 61)
 N. of ToT signals over threshold: 44114 out of 53708 total signals ( 82% ) 
 
-Cross coincidence found at trigger 1804 (timestamp 6.50615e+09) : scintibars 10 and 4 fired at 9379.25 and 9381.25 respectively
+Cross coincidence found at trigger 841 (timestamp 2.85577e+09) : scintibars 7 and 3 fired at 3247.75 and 3253.5 respectively
 
 
-Total anomalous negative time differences of this run: 49716 out of 60087 ( 82.74% )
+Cross coincidence found at trigger 841 (timestamp 2.85577e+09) : scintibars 7 and 3 fired at 3248 and 3253.5 respectively
+
+
+Cross coincidence found at trigger 854 (timestamp 2.89417e+09) : scintibars 1 and 6 fired at 11777.5 and 11772.7 respectively
+
+
+Cross coincidence found at trigger 854 (timestamp 2.89417e+09) : scintibars 1 and 6 fired at 11778 and 11772.7 respectively
+
+
+Cross coincidence found at trigger 909 (timestamp 3.08617e+09) : scintibars 4 and 7 fired at 8515.5 and 8521.25 respectively
+
+
+Cross coincidence found at trigger 909 (timestamp 3.08617e+09) : scintibars 4 and 8 fired at 8515.5 and 8523.25 respectively
+
+
+Cross coincidence found at trigger 909 (timestamp 3.08617e+09) : scintibars 4 and 7 fired at 8515.75 and 8521.25 respectively
+
+
+Cross coincidence found at trigger 909 (timestamp 3.08617e+09) : scintibars 4 and 8 fired at 8515.75 and 8523.25 respectively
+
+
+Cross coincidence found at trigger 1726 (timestamp 6.05135e+09) : scintibars 0 and 8 fired at 3785.25 and 3789.75 respectively
+
+
+Cross coincidence found at trigger 1804 (timestamp 6.50615e+09) : scintibars 10 and 4 fired at 9375.5 and 9377.5 respectively
+
+
+Cross coincidence found at trigger 2098 (timestamp 8.21133e+09) : scintibars 10 and 4 fired at 2088.75 and 2093.5 respectively
+
+
+Cross coincidence found at trigger 2098 (timestamp 8.21133e+09) : scintibars 10 and 4 fired at 2089.25 and 2093.5 respectively
+
+
+Cross coincidence found at trigger 2098 (timestamp 8.21133e+09) : scintibars 10 and 4 fired at 2088.5 and 2093.5 respectively
+
+
+Total anomalous negative time differences of this run: 49370 out of 60087 ( 82.1642% )
 Total coincidences            Total double coincidences     Total cross coincidences      
-344                           62                            1                             
+690                           165                           13                            
 Statistics:     xy      x      y
 Sum of signals: 0.0000 0.0000 0.0000
 Signal/Trigger: 0.0000 0.0000 0.0000
@@ -445,7 +601,7 @@ Run 21 analysis completed
 #  NEntries AcqTime_s xCoinc[0] xCoinc[1] xCoinc[2] xCoinc[3] xCoinc[4] xCoinc[5] xCoinc[6] xCoinc[7] yCoinc[0] yCoinc[1] yCoinc[2] yCoinc[3] yCoinc[4] yCoinc[5] yCoinc[6] yCoinc[7]
   2465 10454.325195 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000
 
-With 0.5 ns resolution on timing measurements, a scintillator bar can be divided in 5 sections -> x "resolution" using time of arrival information is 100 mm
+With 0.5 ns resolution on timing measurements, a scintillator bar can be divided in 20 sections -> x "resolution" using time of arrival information is 25 mm
 Total Acquisition time [s]: 11584.7
 Number of active SiPM channels from data: 31
 Total Reference Times (triggers) : 2258
@@ -489,9 +645,15 @@ Out of 31 channels, 21 have not enough entries to compute pedestals
 OBJ: TCut	CUT	(tot>=36.00 && chan == 0)||(tot>=50.93 && chan == 1)||(tot>=36.00 && chan == 4)||(tot>=62.00 && chan == 5)||(tot>=26.13 && chan == 8)||(tot>=31.97 && chan == 9)||(tot>=26.85 && chan == 12)||(tot>=36.00 && chan == 13)||(tot>=36.00 && chan == 16)||(tot>=36.00 && chan == 17)||(tot>=36.00 && chan == 20)||(tot>=36.00 && chan == 21)||(tot>=36.00 && chan == 24)||(tot>=36.00 && chan == 25)||(tot>=37.00 && chan == 28)||(tot>=34.47 && chan == 32)||(tot>=52.57 && chan == 33)||(tot>=36.00 && chan == 36)||(tot>=36.00 && chan == 37)||(tot>=36.00 && chan == 40)||(tot>=36.00 && chan == 41)||(tot>=36.00 && chan == 44)||(tot>=36.00 && chan == 45)||(tot>=36.00 && chan == 48)||(tot>=36.00 && chan == 49)||(tot>=36.00 && chan == 52)||(tot>=36.00 && chan == 53)||(tot>=36.00 && chan == 56)||(tot>=36.00 && chan == 57)||(tot>=39.01 && chan == 60)||(tot>=40.52 && chan == 61)
 N. of ToT signals over threshold: 53003 out of 64855 total signals ( 81% ) 
 
-Total anomalous negative time differences of this run: 64412 out of 78576 ( 81.9741% )
+Cross coincidence found at trigger 695 (timestamp 4.0875e+09) : scintibars 11 and 1 fired at 8970.5 and 8980.25 respectively
+
+
+Cross coincidence found at trigger 695 (timestamp 4.0875e+09) : scintibars 1 and 11 fired at 8977.25 and 8970.5 respectively
+
+
+Total anomalous negative time differences of this run: 63935 out of 78576 ( 81.3671% )
 Total coincidences            Total double coincidences     Total cross coincidences      
-434                           50                            0                             
+911                           192                           2                             
 Statistics:     xy      x      y
 Sum of signals: 0.0000 0.0000 0.0000
 Signal/Trigger: 0.0000 0.0000 0.0000
@@ -501,7 +663,7 @@ Run 28 analysis completed
 #  NEntries AcqTime_s xCoinc[0] xCoinc[1] xCoinc[2] xCoinc[3] xCoinc[4] xCoinc[5] xCoinc[6] xCoinc[7] yCoinc[0] yCoinc[1] yCoinc[2] yCoinc[3] yCoinc[4] yCoinc[5] yCoinc[6] yCoinc[7]
   2258 11584.717773 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000
 
-With 0.5 ns resolution on timing measurements, a scintillator bar can be divided in 5 sections -> x "resolution" using time of arrival information is 100 mm
+With 0.5 ns resolution on timing measurements, a scintillator bar can be divided in 20 sections -> x "resolution" using time of arrival information is 25 mm
 Total Acquisition time [s]: 10003.1
 Number of active SiPM channels from data: 31
 Total Reference Times (triggers) : 2525
@@ -545,18 +707,42 @@ Out of 31 channels, 21 have not enough entries to compute pedestals
 OBJ: TCut	CUT	(tot>=36.00 && chan == 0)||(tot>=50.93 && chan == 1)||(tot>=36.00 && chan == 4)||(tot>=62.00 && chan == 5)||(tot>=26.13 && chan == 8)||(tot>=31.97 && chan == 9)||(tot>=26.85 && chan == 12)||(tot>=36.00 && chan == 13)||(tot>=36.00 && chan == 16)||(tot>=36.00 && chan == 17)||(tot>=36.00 && chan == 20)||(tot>=36.00 && chan == 21)||(tot>=36.00 && chan == 24)||(tot>=36.00 && chan == 25)||(tot>=37.00 && chan == 28)||(tot>=34.47 && chan == 32)||(tot>=52.57 && chan == 33)||(tot>=36.00 && chan == 36)||(tot>=36.00 && chan == 37)||(tot>=36.00 && chan == 40)||(tot>=36.00 && chan == 41)||(tot>=36.00 && chan == 44)||(tot>=36.00 && chan == 45)||(tot>=36.00 && chan == 48)||(tot>=36.00 && chan == 49)||(tot>=36.00 && chan == 52)||(tot>=36.00 && chan == 53)||(tot>=36.00 && chan == 56)||(tot>=36.00 && chan == 57)||(tot>=39.01 && chan == 60)||(tot>=40.52 && chan == 61)
 N. of ToT signals over threshold: 50162 out of 61336 total signals ( 81% ) 
 
-Cross coincidence found at trigger 56 (timestamp 2.09734e+08) : scintibars 1 and 10 fired at 16819.5 and 16821.8 respectively
+Cross coincidence found at trigger 56 (timestamp 2.09734e+08) : scintibars 1 and 10 fired at 16815.7 and 16820.2 respectively
 
 
-Cross coincidence found at trigger 591 (timestamp 2.18252e+09) : scintibars 1 and 10 fired at 7157 and 7159 respectively
+Cross coincidence found at trigger 56 (timestamp 2.09734e+08) : scintibars 1 and 10 fired at 16815.7 and 16818 respectively
 
 
-Cross coincidence found at trigger 1627 (timestamp 6.15569e+09) : scintibars 1 and 10 fired at 4394 and 4396.5 respectively
+Cross coincidence found at trigger 591 (timestamp 2.18252e+09) : scintibars 1 and 10 fired at 7152.5 and 7155.25 respectively
 
 
-Total anomalous negative time differences of this run: 55205 out of 67542 ( 81.7343% )
+Cross coincidence found at trigger 591 (timestamp 2.18252e+09) : scintibars 1 and 10 fired at 7152.5 and 7156 respectively
+
+
+Cross coincidence found at trigger 591 (timestamp 2.18252e+09) : scintibars 1 and 10 fired at 7153.25 and 7155.25 respectively
+
+
+Cross coincidence found at trigger 591 (timestamp 2.18252e+09) : scintibars 1 and 10 fired at 7153.25 and 7156 respectively
+
+
+Cross coincidence found at trigger 878 (timestamp 3.26251e+09) : scintibars 8 and 2 fired at 10357.2 and 10357.5 respectively
+
+
+Cross coincidence found at trigger 1627 (timestamp 6.15569e+09) : scintibars 1 and 10 fired at 4390.25 and 4392.75 respectively
+
+
+Cross coincidence found at trigger 1627 (timestamp 6.15569e+09) : scintibars 1 and 10 fired at 4390.25 and 4394 respectively
+
+
+Cross coincidence found at trigger 2087 (timestamp 7.96168e+09) : scintibars 4 and 7 fired at 2670.25 and 2671.75 respectively
+
+
+Cross coincidence found at trigger 2087 (timestamp 7.96168e+09) : scintibars 3 and 7 fired at 2670.5 and 2671.75 respectively
+
+
+Total anomalous negative time differences of this run: 54817 out of 67542 ( 81.1599% )
 Total coincidences            Total double coincidences     Total cross coincidences      
-379                           56                            3                             
+767                           169                           11                            
 Statistics:     xy      x      y
 Sum of signals: 0.0000 0.0000 0.0000
 Signal/Trigger: 0.0000 0.0000 0.0000
@@ -565,75 +751,12 @@ Signal/Time[s]: 0.0000 0.0000 0.0000
 Run 29 analysis completed
 #  NEntries AcqTime_s xCoinc[0] xCoinc[1] xCoinc[2] xCoinc[3] xCoinc[4] xCoinc[5] xCoinc[6] xCoinc[7] yCoinc[0] yCoinc[1] yCoinc[2] yCoinc[3] yCoinc[4] yCoinc[5] yCoinc[6] yCoinc[7]
   2525 10003.127930 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000
-
-With 0.5 ns resolution on timing measurements, a scintillator bar can be divided in 5 sections -> x "resolution" using time of arrival information is 100 mm
-Total Acquisition time [s]: 37757.7
-Number of active SiPM channels from data: 31
-Total Reference Times (triggers) : 21527
-
-Pedestal: active channels, mean ToT, RMS ToT and entries: 
-Channel   Mean ToT  RMS ToT   Entries   
-0         0.00      12.00     8         
-1         22.33     9.53      98291     
-4         0.00      12.00     6         
-5         22.88     13.04     109043    
-8         15.69     3.48      322       
-9         18.52     4.48      23139     
-12        16.64     3.40      197       
-13        0.00      12.00     9         
-16        0.00      12.00     5         
-17        0.00      12.00     8         
-20        0.00      12.00     10        
-21        0.00      12.00     5         
-24        0.00      12.00     8         
-25        0.00      12.00     15        
-28        19.19     5.94      26521     
-32        17.96     5.50      23988     
-33        24.13     9.48      134352    
-36        0.00      12.00     1         
-37        0.00      12.00     17        
-40        0.00      12.00     6         
-41        0.00      12.00     11        
-44        0.00      12.00     6         
-45        0.00      12.00     8         
-48        0.00      12.00     6         
-49        0.00      12.00     10        
-52        0.00      12.00     14        
-53        0.00      12.00     12        
-56        0.00      12.00     17        
-57        0.00      12.00     11        
-60        19.15     6.62      3120      
-61        20.38     6.71      634       
-
-Out of 31 channels, 21 have not enough entries to compute pedestals
-
-OBJ: TCut	CUT	(tot>=36.00 && chan == 0)||(tot>=50.93 && chan == 1)||(tot>=36.00 && chan == 4)||(tot>=62.00 && chan == 5)||(tot>=26.13 && chan == 8)||(tot>=31.97 && chan == 9)||(tot>=26.85 && chan == 12)||(tot>=36.00 && chan == 13)||(tot>=36.00 && chan == 16)||(tot>=36.00 && chan == 17)||(tot>=36.00 && chan == 20)||(tot>=36.00 && chan == 21)||(tot>=36.00 && chan == 24)||(tot>=36.00 && chan == 25)||(tot>=37.00 && chan == 28)||(tot>=34.47 && chan == 32)||(tot>=52.57 && chan == 33)||(tot>=36.00 && chan == 36)||(tot>=36.00 && chan == 37)||(tot>=36.00 && chan == 40)||(tot>=36.00 && chan == 41)||(tot>=36.00 && chan == 44)||(tot>=36.00 && chan == 45)||(tot>=36.00 && chan == 48)||(tot>=36.00 && chan == 49)||(tot>=36.00 && chan == 52)||(tot>=36.00 && chan == 53)||(tot>=36.00 && chan == 56)||(tot>=36.00 && chan == 57)||(tot>=39.01 && chan == 60)||(tot>=40.52 && chan == 61)
-N. of ToT signals over threshold: 130728 out of 171432 total signals ( 76% ) 
-
-Cross coincidence found at trigger 2355 (timestamp 1.1598e+10) : scintibars 9 and 0 fired at 2830.75 and 2829.5 respectively
-
-
-Cross coincidence found at trigger 20775 (timestamp 3.44086e+10) : scintibars 8 and 2 fired at 12667.5 and 12667.2 respectively
-
-
-Total anomalous negative time differences of this run: 106463 out of 136487 ( 78.0023% )
-Total coincidences            Total double coincidences     Total cross coincidences      
-889                           140                           2                             
-Statistics:     xy      x      y
-Sum of signals: 0.0000 0.0000 0.0000
-Signal/Trigger: 0.0000 0.0000 0.0000
-Signal/Time[s]: 0.0000 0.0000 0.0000
-
-Run 30 analysis completed
-#  NEntries AcqTime_s xCoinc[0] xCoinc[1] xCoinc[2] xCoinc[3] xCoinc[4] xCoinc[5] xCoinc[6] xCoinc[7] yCoinc[0] yCoinc[1] yCoinc[2] yCoinc[3] yCoinc[4] yCoinc[5] yCoinc[6] yCoinc[7]
-  21527 37757.730469 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000
-Run 15: 18495 coincidences among 2067triggers
-Run 16: 377 coincidences among 2631triggers
-Run 17: 194 coincidences among 1510triggers
-Run 18: 291 coincidences among 2756triggers
-Run 19: 313 coincidences among 2748triggers
-Run 20: 315 coincidences among 2547triggers
-Run 21: 344 coincidences among 2465triggers
-Run 28: 434 coincidences among 2258triggers
-Run 29: 379 coincidences among 2525triggers
-Run 30: 889 coincidences among 21527triggers
+Run 15: 423260 double coincidences and 207445 cross coincidences among 2067 triggers
+Run 16: 173 double coincidences and 12 cross coincidences among 2631 triggers
+Run 17: 125 double coincidences and 13 cross coincidences among 1510 triggers
+Run 18: 165 double coincidences and 3 cross coincidences among 2756 triggers
+Run 19: 156 double coincidences and 18 cross coincidences among 2748 triggers
+Run 20: 213 double coincidences and 9 cross coincidences among 2547 triggers
+Run 21: 165 double coincidences and 13 cross coincidences among 2465 triggers
+Run 28: 192 double coincidences and 2 cross coincidences among 2258 triggers
+Run 29: 169 double coincidences and 11 cross coincidences among 2525 triggers
