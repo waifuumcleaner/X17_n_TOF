@@ -1,5 +1,5 @@
 Check and parse text data if needed
- Parsed 0 (out of 9) text file and converted to root
+ Parsed 0 (out of 10) text file and converted to root
 Check and parse text data if needed
  Parsed 0 (out of 3) text file and converted to root
 
@@ -751,6 +751,80 @@ Signal/Time[s]: 0.0000 0.0000 0.0000
 Run 29 analysis completed
 #  NEntries AcqTime_s xCoinc[0] xCoinc[1] xCoinc[2] xCoinc[3] xCoinc[4] xCoinc[5] xCoinc[6] xCoinc[7] yCoinc[0] yCoinc[1] yCoinc[2] yCoinc[3] yCoinc[4] yCoinc[5] yCoinc[6] yCoinc[7]
   2525 10003.127930 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000
+
+With 0.5 ns resolution on timing measurements, a scintillator bar can be divided in 20 sections -> x "resolution" using time of arrival information is 25 mm
+Total Acquisition time [s]: 37757.7
+Number of active SiPM channels from data: 31
+Total Reference Times (triggers) : 21527
+
+Pedestal: active channels, mean ToT, RMS ToT and entries: 
+Channel   Mean ToT  RMS ToT   Entries   
+0         0.00      12.00     8         
+1         22.33     9.53      98291     
+4         0.00      12.00     6         
+5         22.88     13.04     109043    
+8         15.69     3.48      322       
+9         18.52     4.48      23139     
+12        16.64     3.40      197       
+13        0.00      12.00     9         
+16        0.00      12.00     5         
+17        0.00      12.00     8         
+20        0.00      12.00     10        
+21        0.00      12.00     5         
+24        0.00      12.00     8         
+25        0.00      12.00     15        
+28        19.19     5.94      26521     
+32        17.96     5.50      23988     
+33        24.13     9.48      134352    
+36        0.00      12.00     1         
+37        0.00      12.00     17        
+40        0.00      12.00     6         
+41        0.00      12.00     11        
+44        0.00      12.00     6         
+45        0.00      12.00     8         
+48        0.00      12.00     6         
+49        0.00      12.00     10        
+52        0.00      12.00     14        
+53        0.00      12.00     12        
+56        0.00      12.00     17        
+57        0.00      12.00     11        
+60        19.15     6.62      3120      
+61        20.38     6.71      634       
+
+Out of 31 channels, 21 have not enough entries to compute pedestals
+
+OBJ: TCut	CUT	(tot>=36.00 && chan == 0)||(tot>=50.93 && chan == 1)||(tot>=36.00 && chan == 4)||(tot>=62.00 && chan == 5)||(tot>=26.13 && chan == 8)||(tot>=31.97 && chan == 9)||(tot>=26.85 && chan == 12)||(tot>=36.00 && chan == 13)||(tot>=36.00 && chan == 16)||(tot>=36.00 && chan == 17)||(tot>=36.00 && chan == 20)||(tot>=36.00 && chan == 21)||(tot>=36.00 && chan == 24)||(tot>=36.00 && chan == 25)||(tot>=37.00 && chan == 28)||(tot>=34.47 && chan == 32)||(tot>=52.57 && chan == 33)||(tot>=36.00 && chan == 36)||(tot>=36.00 && chan == 37)||(tot>=36.00 && chan == 40)||(tot>=36.00 && chan == 41)||(tot>=36.00 && chan == 44)||(tot>=36.00 && chan == 45)||(tot>=36.00 && chan == 48)||(tot>=36.00 && chan == 49)||(tot>=36.00 && chan == 52)||(tot>=36.00 && chan == 53)||(tot>=36.00 && chan == 56)||(tot>=36.00 && chan == 57)||(tot>=39.01 && chan == 60)||(tot>=40.52 && chan == 61)
+N. of ToT signals over threshold: 130728 out of 171432 total signals ( 76% ) 
+
+Cross coincidence found at trigger 235 (timestamp 1.21803e+09) : scintibars 0 and 6 fired at 19436.7 and 19430.7 respectively
+
+
+Cross coincidence found at trigger 749 (timestamp 3.49802e+09) : scintibars 7 and 4 fired at 10665.2 and 10666.2 respectively
+
+
+Cross coincidence found at trigger 749 (timestamp 3.49802e+09) : scintibars 7 and 4 fired at 10665.7 and 10666.2 respectively
+
+
+Cross coincidence found at trigger 1386 (timestamp 7.29959e+09) : scintibars 10 and 1 fired at 18457 and 18463.5 respectively
+
+
+Cross coincidence found at trigger 2355 (timestamp 1.1598e+10) : scintibars 9 and 0 fired at 2827 and 2825.75 respectively
+
+
+Cross coincidence found at trigger 20775 (timestamp 3.44086e+10) : scintibars 8 and 2 fired at 12663.7 and 12663.5 respectively
+
+
+Total anomalous negative time differences of this run: 105465 out of 136487 ( 77.2711% )
+Total coincidences            Total double coincidences     Total cross coincidences      
+1887                          470                           6                             
+Statistics:     xy      x      y
+Sum of signals: 0.0000 0.0000 0.0000
+Signal/Trigger: 0.0000 0.0000 0.0000
+Signal/Time[s]: 0.0000 0.0000 0.0000
+
+Run 30 analysis completed
+#  NEntries AcqTime_s xCoinc[0] xCoinc[1] xCoinc[2] xCoinc[3] xCoinc[4] xCoinc[5] xCoinc[6] xCoinc[7] yCoinc[0] yCoinc[1] yCoinc[2] yCoinc[3] yCoinc[4] yCoinc[5] yCoinc[6] yCoinc[7]
+  21527 37757.730469 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000
 Run 15: 423260 double coincidences and 207445 cross coincidences among 2067 triggers
 Run 16: 173 double coincidences and 12 cross coincidences among 2631 triggers
 Run 17: 125 double coincidences and 13 cross coincidences among 1510 triggers
@@ -760,3 +834,4 @@ Run 20: 213 double coincidences and 9 cross coincidences among 2547 triggers
 Run 21: 165 double coincidences and 13 cross coincidences among 2465 triggers
 Run 28: 192 double coincidences and 2 cross coincidences among 2258 triggers
 Run 29: 169 double coincidences and 11 cross coincidences among 2525 triggers
+Run 30: 470 double coincidences and 6 cross coincidences among 21527 triggers

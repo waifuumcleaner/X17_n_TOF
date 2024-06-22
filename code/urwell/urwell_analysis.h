@@ -1,12 +1,13 @@
 /*
- * urwana.cpp header files, containing basic struct and class definitions
+ * urwell_analysis.cpp header file, containing basic struct and class definitions
  */
-#ifndef URWANA_H
-#define URWANA_H
+#ifndef URWELL_ANALYSIS_H
+#define URWELL_ANALYSIS_H
 
 #include <vector>
 
 #include <TFile.h>
+#include <TProfile.h>
 #include <TString.h>
 
 constexpr int n_apv = 10;    // number of APV cards
@@ -167,7 +168,7 @@ class SpaceCluster {
   public:
     SpaceCluster(float sigmat = 2, int nsample = 4, int maxmask = 3);
 
-    ~SpaceCluster(){};
+    ~SpaceCluster();
 
     /**
      * @brief
@@ -211,7 +212,7 @@ std::vector<std::vector<float>> commonNoise(mmRawTree *tt, PEDES ped, int method
  * BRIEF TO BE DONE
  *
  * @param phys_run Physics run number
- * @param ped_run Pedestal run number. If <0 assume phys_run is pedestal subtracted
+ * @param ped_run Pedestal run number. If <0 assumes phys_run is already pedestal subtracted
  * @param nsigma Number of sigma for signal threshold
  * @param min_ncsample Min number of consecutive samples forming a signal time cluster
  * @param max_ncsample Max number of consecutive sample that cannot be exceeded to form a cluster (TBC)
@@ -255,4 +256,5 @@ void readClusterOut(int run = 1, TString dpath = "../../test_231020/data/srs");
  */
 void readTrackOut(int run = 1, TString dpath = "../../test_231020/data/srs");
 
+int urwell_analysis_main();
 #endif

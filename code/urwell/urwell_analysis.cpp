@@ -34,13 +34,18 @@
 #include <TTreeReader.h>
 #include <TVirtualFFT.h>
 
-#define mmRawTree_cxx
 #include "mmRawTree.h"
 
-#include "../sipm/ntofDAQ.h"
+#include "../cube/ntofDAQ.h"
+#include "../utils.h"
 #include "eventDisplay.h"
-#include "urwana.h"
+#include "urwell_analysis.h"
 #include "utilf.h"
+
+// FROM SHELL: g++ urwana.cpp  -Wall -Wextra -g -O3 `root-config --cflags --libs`
+//              ./a.out
+// FROM ROOT : .L urwana.cpp+
+//             decodePhysRun(29, 27, 5, 6, 18)
 
 // from apv and ch (electronics) indeces to absolute channel index (or strip index)
 int e2a(int iapv, int irch) { return iapv * 128 + irch; }
@@ -63,7 +68,7 @@ int c2a(int icha, int istrip) { return (icha * 512 + istrip); }
 PEDES getPedestal(mmRawTree *rawT, // used to get the module names
                   TString infile, TFile *fIn, float hothr) {
 
-    TText *testo = new TText();
+    // TText *testo = new TText();
 
     //  const char cname[2][10]={"BOT","TOP"};
     // const char cname[2][10]={"uRwA","uRwB"};
@@ -222,7 +227,7 @@ std::vector<TCLUSTER> samplesAnalysis(std::vector<float> adc, // signal, noise s
     int adj0 = -1;   // first sample
     float adjqp = 0; // total charge
     float adjcc = 0; // sample centroid
-    int adjmax = -1; // sample with max
+    // int adjmax = -1; // sample with max
 
     for (int is = 0; is < nsamples; is++) {
 
@@ -479,16 +484,6 @@ std::vector<std::vector<float>> commonNoise(mmRawTree *tt, PEDES ped, int method
 };
 
 /*
-int eventDisplay(TProfile *hpo[n_apv]) {
-
-  // oscilloscope: charge vs 128strip+samples
-  // time clusters
-  // strip clusters
-  return 0;
-}
-*/
-
-/*
  * ############################################
  * MAIN METHODS
  * ############################################
@@ -512,9 +507,9 @@ int decodePhysRun(int phys_run, int ped_run, float nsigma, int min_ncsample, int
         otxtfile = Form("%s/run%d_cluster.txt", dpath.Data(), phys_run);
     }
 
-    TText *testo = new TText();
-    // ISS  const char cname[2][10]={"BOT","TOP"};
-    // const char cname[2][10]={"uRwA","uRwB"};
+    // TText *testo = new TText();
+    //  ISS  const char cname[2][10]={"BOT","TOP"};
+    //  const char cname[2][10]={"uRwA","uRwB"};
 
     // open raw file and load ttree
     TFile *fIn = new TFile(infile.Data(), "READ");
@@ -552,7 +547,7 @@ int decodePhysRun(int phys_run, int ped_run, float nsigma, int min_ncsample, int
     }
 
     // prepare output trees
-    STRIPS sso;
+    // STRIPS sso; // why is this not used??
     TCLUSTER tcln;
     SCLUSTER scln;
     EVENTINFO evto;
@@ -618,7 +613,7 @@ int decodePhysRun(int phys_run, int ped_run, float nsigma, int min_ncsample, int
       }
     */
 
-    int deltastrip = 1; // used to manage masked channel for spatial cluster identification
+    // int deltastrip = 1; // used to manage masked channel for spatial cluster identification //not actually used??
 
     long int start_time_s = -1;
     TString string_stime;
@@ -744,7 +739,7 @@ int decodePhysRun(int phys_run, int ped_run, float nsigma, int min_ncsample, int
     return 0;
 }
 
-int readAna(int nrun = 1, Float_t thr_q = 1000, Int_t thr_ns = 1, Int_t thr_nt = 5, TString dpath = "/home/nicholas/Desktop/Thesis/Cisbani-X17/test_231020/data/srs") {
+int readAna(int nrun, Float_t thr_q, Int_t thr_ns, Int_t thr_nt, TString dpath) {
 
     TString infile = Form("%s/run%d_ana.root", dpath.Data(), nrun);
 
@@ -1115,4 +1110,16 @@ void readTrackOut(int run, TString dpath) {
     cc->Update();
 };
 
-int main() { decodePhysRun(29, 27, 5, 6, 18, 1, 0); }
+int main() {
+
+    try {
+        std::ofstream output_file("output.txt");
+        (void)!freopen("output.txt", "w", stdout);
+        decodePhysRun(29, 27, 5, 6, 18, 1, 0);
+        output_file.close();
+    } catch (const std::exception &e) {
+        handle_exception(e);
+        return 1;
+    }
+    return 0;
+}

@@ -1,4 +1,9 @@
-test_231020/
-.vscode
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
 a.out
+.vscode
+test_231020/
 timing_pedestal.root

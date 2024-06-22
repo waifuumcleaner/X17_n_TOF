@@ -10,7 +10,7 @@
 #include <TGraph.h>
 #include <TGraphErrors.h>
 #include <TString.h>
-#include <stdio.h>
+#include <iostream>
 
 // signal on single strip with time samples: consecutive samples over threshold
 struct uTSIGNAL {
@@ -170,7 +170,10 @@ class tsCluster {
         return vret;
     };
 
-    TF1 *getSignalFitFun(int idx = 0) { return fRT_pulse; };
+    TF1 *getSignalFitFun(int idx = 0) {
+        std::cout << "Don't know what to do with given idx " << idx << " yet\n";
+        return fRT_pulse;
+    };
 
     /*
      */
@@ -201,6 +204,7 @@ class tsCluster {
         float sample_period = 25.;            // [ns]
         float funTau0 = 200. / sample_period; // raising time constant (sample unit of 25 ns)
         float funTau1 = 900. / sample_period; //
+        std::cout << "funTau0 and funTau1 are " << funTau0 << " and " << funTau1 << ", respectively\n";
 
         TGraph *gr = new TGraph(nsam);
 
@@ -402,8 +406,8 @@ class tsCluster {
         // NOTE: not applicable if chambers are not stackered for tracking
         // for (vector<uCLUSTER>::iterator vc = fvcl.begin(); vc != fvcl.end(); vc++) {
         std::vector<int> cktrack; // vector of cluster indices, one for each chamber
-        int ntrack = 0;
-        int nchamb = 0;
+        // int ntrack = 0;
+        // int nchamb = 0;
         for (int ic = 0; ic < (int)mod2cl[0].size(); ic++) { // loop on clusters of the first chamber
             int clm0 = mod2cl[0][ic];
             cktrack.push_back(clm0);
@@ -533,8 +537,8 @@ class tsCluster {
 
     int searchClustersX(int thrsample = 8, int maxsample = 20) { // search space-time clusters, shall have thrsample consecutive samples with charge>0 and cannot exceed maxSample contiguous samples
 
-        int idxClu = 0; // running cluster index
-        int count = 0;
+        // int idxClu = 0; // running cluster index
+        // int count = 0;
 
         uTSIGNAL tsd;
         if (fverbose > 1) {
@@ -667,8 +671,8 @@ class tsCluster {
 
 int alignmentOptimization(tsCluster *tc) {
 
-    static float ns1 = 0;
-    static float ds1 = 0;
+    // static float ns1 = 0;
+    // static float ds1 = 0;
 
     int nt = tc->numTracks(); // current event tracks
 
@@ -676,7 +680,7 @@ int alignmentOptimization(tsCluster *tc) {
         return 0;
     } // consider "clean events" only
 
-    float s1 = 0;
+    // float s1 = 0;
 
     return 0;
 };
