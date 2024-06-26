@@ -39,6 +39,7 @@
 
 #include "../utils.h"
 #include "sipm_analysis.h"
+#include "sipm_classes.h"
 
 // FROM SHELL:  g++ anasipm_timing.cpp  -Wall -Wextra -g -O3 `root-config --cflags --libs`
 //              ./a.out
@@ -56,344 +57,6 @@ void set_local_style() {
     gStyle->SetPadBottomMargin(.1);
     gStyle->SetOptStat(0);
     gStyle->SetOptFit(0);
-}
-
-coinc_counter::coinc_counter() : run_n(0), ns_delay(0), trig_n(0), coinc_n(0), double_coinc_n(0), cross_coinc_n(0) {}
-
-coinc_counter::coinc_counter(int run_number, int gflash_delay_in_ns, int trigger_n, int coincidences_n, int double_coincidences_n, int cross_coincidences_n) : run_n(run_number), ns_delay(gflash_delay_in_ns), trig_n(trigger_n), coinc_n(coincidences_n), double_coinc_n(double_coincidences_n), cross_coinc_n(cross_coincidences_n) {}
-
-coincidence_Info::coincidence_Info() : counters(std::vector<coinc_counter>()) {}
-
-void coincidence_Info::add_counter(const coinc_counter &counter) { counters.push_back(counter); }
-
-const std::vector<coinc_counter> &coincidence_Info::get_counter() const { return counters; }
-
-summaryList::summaryList(TString name) {
-    iList = new TList();
-    fList = new TList();
-    iList->SetName("int_" + name);
-    fList->SetName("float_" + name);
-}
-summaryList::~summaryList() {
-    if (iList != NULL) {
-        delete iList;
-        delete fList;
-    }
-}
-void summaryList::resetLists() {
-    iList->Clear();
-    fList->Clear();
-}
-void summaryList::addFloat(float val, TString name) {
-    fPar = new TParameter<float>(name, val);
-    fList->Add(fPar);
-}
-void summaryList::addFloat(TParameter<float> *p) { fList->Add(p); }
-void summaryList::addInt(int val, TString name) {
-    iPar = new TParameter<int>(name, val);
-    iList->Add(iPar);
-}
-void summaryList::addInt(TParameter<int> *p) { iList->Add(p); }
-std::string summaryList::getNames(int format) { // 0=just space between names, 1=use TTree format
-    std::string rstring = "# ";
-    std::string sform = " %s";
-    if (format == 1)
-        sform = " %s/I";
-
-    for (int i = 0; i < iList->GetSize(); i++) {
-        iPar = (TParameter<int> *)iList->At(i);
-        rstring += Form(sform.data(), iPar->GetName());
-        if (format == 1) {
-            sform = ":%s/I";
-        }
-    }
-    if (format == 1)
-        sform = ":%s/F";
-    for (int i = 0; i < fList->GetSize(); i++) {
-        fPar = (TParameter<float> *)fList->At(i);
-        rstring += Form(sform.data(), fPar->GetName());
-    }
-    return rstring;
-}
-std::string summaryList::getValues() {
-    std::string rstring = " ";
-    for (int i = 0; i < iList->GetSize(); i++) {
-        iPar = (TParameter<int> *)iList->At(i);
-        rstring += Form(" %d", iPar->GetVal());
-    }
-    for (int i = 0; i < fList->GetSize(); i++) {
-        fPar = (TParameter<float> *)fList->At(i);
-        rstring += Form(" %f", fPar->GetVal());
-    }
-    return rstring;
-}
-TParameter<float> *summaryList::getFloat(int idx) {
-    if (idx < fList->GetSize()) {
-        return (TParameter<float> *)fList->At(idx);
-    } else {
-        return NULL;
-    }
-}
-TParameter<int> *summaryList::getInt(int idx) {
-    if (idx < iList->GetSize()) {
-        return (TParameter<int> *)iList->At(idx);
-    } else {
-        return NULL;
-    }
-}
-void summaryList::merge(summaryList *sl) {
-    int i = 0;
-    while ((fPar = sl->getFloat(i)) != NULL) {
-        addFloat(fPar);
-        i++;
-    }
-    i = 0;
-    while ((iPar = sl->getInt(i)) != NULL) {
-        addInt(iPar);
-        i++;
-    }
-}
-
-std::vector<int> getActiveChannels(TTree *tl) {
-    std::vector<int> vret;
-    std::set<int> unique_chs;
-
-    if (tl == NULL) {
-        for (int i = 0; i < 32; i++) { // assume active ch 0,1  4,5,  8,9 ...
-            int cc = (i / 2) * 4 + (i % 2);
-            vret.push_back(cc);
-        }
-    } else {
-        tl->Draw("chan", "Entry$<1000", "goff");
-        int nn = tl->GetSelectedRows();
-        for (int i = 0; i < nn; ++i) {
-            int ch = (int)tl->GetV1()[i];
-            unique_chs.insert(ch);
-            /*(std::find(vret.begin(), vret.end(), ch) == vret.end())
-            {
-              vret.push_back(cur);
-            }*/
-        }
-    }
-    vret.assign(unique_chs.begin(), unique_chs.end());
-    return vret;
-}
-
-int c2side(int ch) {
-    int maskmap[2][4] = {{0, 0, 1, 1}, {0, 0, 1, 1}}; // [axis][0..3] 1 masked, 0 running ;
-    int lrudmap[2][2] = {{2, 0}, {1, 3}};             // [axis][even,odd] <- TO BE VERIFIED
-
-    int axis = (ch / 32); // 0 x, 1 y
-    int lrud = ch % 2;    // odd: top or left, even: bottom, right
-    int masked = maskmap[axis][ch % 4];
-
-    int rval = lrudmap[axis][lrud];
-    if (masked)
-        rval = -1;
-
-    return rval;
-}
-
-float c2x(int ch) {
-    float x = 0;
-    float axis = (float)(ch / 32);
-    float ipos = 0;
-    if (axis > 0) {
-        x = half_bar_length - 2 * half_bar_length * (ch % 2);
-    } else {
-        ipos = (float)(ch / 4);
-        x = ipos * si_channel_length - si_channel_length * 3.5;
-    }
-    return x;
-}
-
-float c2y(int ch) {
-    float y = 0;
-    float axis = (float)(ch / 32);
-    float ipos = 0;
-    if (axis == 0) {
-        y = -half_bar_length + 2 * half_bar_length * (ch % 2);
-    } else {
-        ipos = (float)((ch - 32) / 4); // cern test, previous iss test 32 -> 34
-        y = -ipos * si_channel_length + si_channel_length * 3.5;
-    }
-    return y;
-}
-
-manageTree::manageTree(TString sofile) {
-    fout = new TFile(sofile, "recreate");
-    tlist = new TTree("tlist", "Event Lists");
-    countEvents = 0;
-
-    chan = new int[max_sig];
-    lgain = new int[max_sig];
-    hgain = new int[max_sig];
-    tot = new int[max_sig];
-    toa = new int[max_sig];
-
-    xc = new double[4];
-    yc = new double[4];
-    qt = new double[4];
-
-    novt = 0;
-}
-
-manageTree::~manageTree() {
-    delete[] chan;
-    delete[] lgain;
-    delete[] hgain;
-    delete[] tot;
-    delete[] toa;
-    delete[] xc;
-    delete[] yc;
-    delete[] qt;
-    //    delete tlist;
-}
-
-void manageTree::allocBranches(int acqmode) { // 0: spectroscopy, 1: timing 2:spect_timing
-
-    amode = acqmode;
-
-    tlist->Branch("timeus", &timeus, "timeus/F");
-    tlist->Branch("trigger", &trgid, "trgid/I");
-    tlist->Branch("novt", &novt, "novt/I"); // number of signals
-    tlist->Branch("chan", chan, "chan[novt]/I");
-
-    if (amode != 1) {
-        tlist->Branch("lgain", lgain, "lgain[novt]/I");
-        tlist->Branch("hgain", hgain, "hgain[novt]/I");
-        tlist->Branch("xcen", xc, "xc[4]/D");
-        tlist->Branch("ycen", yc, "yc[4]/D");
-        tlist->Branch("charge", qt, "qt[4]/D");
-    }
-    if (amode != 0) {
-        tlist->Branch("toa", toa, "toa[novt]/I");
-        tlist->Branch("tot", tot, "tot[novt]/I");
-    }
-    tlist->Branch("bPulse", &beamPulse, "bPulse/F");
-    tlist->Branch("bDTime", &beamDelta, "bDTime/F");
-
-    //    branch[6] = tlist->Branch("ybal", &yb, "yb/I");
-
-    printf("  tree branches allocated\n");
-}
-
-bool manageTree::isChannelMasked(int ch) { return (c2side(ch) == -1) ? true : false; }
-
-void manageTree::evalCentroids() {
-
-    for (int i = 0; i < 64; i++) {
-        double charge = (double)hgain[i]; // single board @@@
-        // if (charge>5000) printf(" ... still %d %d %f\n",i,hgain[i],charge);
-        int cyc = c2side(i);
-        if (cyc < 0)
-            continue;
-        double x = c2x(i);
-        double y = c2y(i);
-        xc[cyc] += x * charge;
-        yc[cyc] += y * charge;
-        qt[cyc] += charge;
-    }
-    for (int j = 0; j < 4; j++) {
-        if (qt[j] > 0) {
-            xc[j] = xc[j] / qt[j];
-            yc[j] = yc[j] / qt[j];
-        }
-    }
-
-    return;
-}
-
-void manageTree::resetVars() {
-    novt = 0;
-    for (int j = 0; j < 4; j++) {
-        xc[j] = 0;
-        yc[j] = 0;
-        qt[j] = 0;
-    }
-}
-
-void manageTree::setTimeTrg(float time, float trg) {
-    timeus = time;
-    trgid = (int)trg;
-}
-
-void manageTree::setChannel(float board, float channel) {
-    if (novt >= max_sig) {
-        printf("WARNING: number of signals/channels exceed current limit %d, no further signals considered\n", novt);
-    } else {
-        chan[novt] = ((int)board) * 32 + ((int)channel);
-        novt += 1;
-    }
-}
-
-void manageTree::setADCs(float lgadc, float hgadc) {
-    lgain[novt - 1] = (int)lgadc;
-    hgain[novt - 1] = (int)hgadc;
-}
-
-void manageTree::setTime(float toav, float totv) {
-    toa[novt - 1] = (int)toav;
-    tot[novt - 1] = (int)totv;
-}
-
-void manageTree::setVars(float *arr) {
-    setChannel(arr[0], arr[1]);
-    switch (amode) {
-    case 0: // spectroscopy
-        setADCs(arr[2], arr[3]);
-        break;
-    case 1: // timing
-        setTime(arr[2], arr[3]);
-        break;
-    case 2: // spect_timing
-        setADCs(arr[2], arr[3]);
-        setTime(arr[4], arr[5]);
-        break;
-    }
-}
-
-void manageTree::setBeamInfo(float pulse, float dtime) {
-    beamPulse = pulse;
-    beamDelta = dtime;
-}
-
-int manageTree::proFill() {
-    //    printf(" fill %d %d %f\n",novt,chan[0], timeus);
-    if (novt <= 0) {
-        return 0;
-    }
-    if ((amode % 2) == 0)
-        evalCentroids(); // hgain[0]); // only board 0 @@@
-    tlist->Fill();
-    resetVars();
-    countEvents += 1;
-    return 0;
-}
-
-void manageTree::setUserData(int runnum, float timebin, int histoch, TString startime) {
-    userlist = (TList *)tlist->GetUserInfo();
-    TParameter<int> *tp0 = new TParameter<int>("RunNumber", runnum);
-    userlist->Add(tp0);
-    TParameter<std::time_t> *tp0a = new TParameter<std::time_t>("StartTime", convertTime(startime));
-    userlist->Add(tp0a);
-    TParameter<int> *tp0b = new TParameter<int>("AcqMode", amode);
-    userlist->Add(tp0b);
-    TParameter<float> *tp1 = new TParameter<float>("TimeBinWidth", timebin);
-    userlist->Add(tp1);
-    TParameter<int> *tp2 = new TParameter<int>("HistoBins", histoch);
-    userlist->Add(tp2);
-    tlist->GetUserInfo()->Print();
-    tlist->GetCurrentFile()->Write();
-}
-
-TTree *manageTree::getTree() { return tlist; }
-
-void manageTree::Print() { printf(" Trg: %d at time [ms] %f\n", trgid, timeus / 1000); }
-
-void manageTree::Save() {
-    fout->Write();
-    fout->Close();
 }
 
 int parseListFile(int run, TString basepath, TString prefix = "/fers/Run", TString ntofRoot = "__NONE__") {
@@ -716,7 +379,7 @@ std::vector<std::vector<float>> get_ToT_pedestal(const std::vector<int> act_ch_v
     return ped_v;
 };
 
-void plot_timing_data(TH1F *h_time_diff, TH1F *h_coinc_per_trigger, std::vector<TH1F *> dead_t_ch_even, std::vector<TH1F *> dead_t_ch_odd, TH2F *h_toa_corr, TH1F *h_toa, TGraph *tot_global_corr, TH1F *h_tot_prod, std::vector<TGraph *> &tot_corr_ch, TH2F *hxy_channels, TH2F *hxy_bars, TH2F *hxy_bars_toa, TH2F *hxy_bars_tot, TH2F *hxy_cross_bars, const float thr_toa, const int run_number) {
+void plot_timing_data(TH1F *h_time_diff, TH1F *h_coinc_per_trigger, std::vector<TH1F *> dead_t_ch_even, std::vector<TH1F *> dead_t_ch_odd, std::vector<TH2F *> &tot_dead_t_ch_even, std::vector<TH2F *> &tot_dead_t_ch_odd, TH2F *h_toa_corr, TH1F *h_toa, TGraph *tot_global_corr, TH1F *h_tot_prod, std::vector<TGraph *> &tot_corr_ch, TH2F *hxy_channels, TH2F *hxy_bars, TH2F *hxy_bars_toa, TH2F *hxy_bars_tot, TH2F *hxy_cross_bars, const float thr_toa, const int run_number) {
     TCanvas *cv_time_diff = new TCanvas("cv_time_diff", "Time differences canvas", 0, 0, 1920, 1000);
     h_time_diff->Draw("HIST");
     h_time_diff->SetFillColor(kBlue);
@@ -779,6 +442,34 @@ void plot_timing_data(TH1F *h_time_diff, TH1F *h_coinc_per_trigger, std::vector<
     for (auto h : dead_t_ch_odd)
         delete h;
     delete cv_dead_t_odd;
+
+    TCanvas *cv_tot_dead_t_even = new TCanvas("cv_tot_dead_t_even", "True dead time estimation - right and bottom channels", 0, 0, 1920, 1000);
+    cv_tot_dead_t_even->Divide(4, 4, 0.0001, 0.002);
+    for (int i = 0; i != 16; ++i) {
+        cv_tot_dead_t_even->cd(i + 1);
+        gPad->SetBottomMargin(0.15);
+        // gPad->SetLeftMargin(0.15);
+        tot_dead_t_ch_even[i]->Draw("COLZ");
+    }
+    cv_tot_dead_t_even->Update();
+    cv_tot_dead_t_even->SaveAs(Form("../code/sipm/Run_%d/Run_%d_tot_dead_time_even.png", run_number, run_number));
+    for (auto h : tot_dead_t_ch_even)
+        delete h;
+    delete cv_tot_dead_t_even;
+
+    TCanvas *cv_tot_dead_t_odd = new TCanvas("cv_tot_dead_t_odd", "True dead time estimation - left and top channels", 0, 0, 1920, 1000);
+    cv_tot_dead_t_odd->Divide(4, 4, 0.0001, 0.002);
+    for (int i = 0; i != 16; ++i) {
+        cv_tot_dead_t_odd->cd(i + 1);
+        gPad->SetBottomMargin(0.15);
+        // gPad->SetLeftMargin(0.15);
+        tot_dead_t_ch_odd[i]->Draw("COLZ");
+    }
+    cv_tot_dead_t_odd->Update();
+    cv_tot_dead_t_odd->SaveAs(Form("../code/sipm/Run_%d/Run_%d_tot_dead_time_odd.png", run_number, run_number));
+    for (auto h : tot_dead_t_ch_odd)
+        delete h;
+    delete cv_tot_dead_t_odd;
 
     TCanvas *cv_hit_toa = new TCanvas("cv_hit_toa", "Information from Time of Arrival", 0, 0, 2400, 1200);
     cv_hit_toa->SetMargin(0.12, 0.05, 0.15, 0.05);
@@ -1248,20 +939,34 @@ summaryList *channelTimeProcess(const int run_number, TTree *tl, coincidence_Inf
     int tottimediff = 0;
     int negtimediff = 0;
 
-    const int trg_rbin = run_delays.at(run_number) != 0 ? 5 : 25;
+    const int trg_rbin = run_delays.at(run_number) != 0 ? 5 : 35;
     TH1F *h_coinc_per_trigger = new TH1F("h_coinc_per_trigger", "Coincidences per trigger", trg_rbin, 0, trg_rbin);
     h_coinc_per_trigger->GetXaxis()->SetTitle("# of coincidences per trigger");
 
     std::vector<TH1F *> dead_t_ch_even(16); // For estimation of dead time in right and bottom channels
     for (int i = 0; i != 16; ++i) {
-        dead_t_ch_even[i] = new TH1F(Form("dead_t_even_ch_%d", i * 4), Form("Channel no. %d", i * 4), 100, 0, 500);
+        dead_t_ch_even[i] = new TH1F(Form("dead_t_even_ch_%d", i * 4), Form("Channel no. %d", i * 4), 100, 0, 2000);
         dead_t_ch_even[i]->GetXaxis()->SetTitle("Time diff [ns]");
     }
 
-    std::vector<TH1F *> dead_t_ch_odd(16); // For estimation of dead time in right and bottom channels
+    std::vector<TH1F *> dead_t_ch_odd(16); // For estimation of dead time in left and top channels
     for (int i = 0; i != 16; ++i) {
-        dead_t_ch_odd[i] = new TH1F(Form("dead_t_odd_ch_%d", i * 4 + 1), Form("Channel no. %d", i * 4 + 1), 100, 0, 500);
+        dead_t_ch_odd[i] = new TH1F(Form("dead_t_odd_ch_%d", i * 4 + 1), Form("Channel no. %d", i * 4 + 1), 100, 0, 2000);
         dead_t_ch_odd[i]->GetXaxis()->SetTitle("Time diff [ns]");
+    }
+
+    std::vector<TH2F *> tot_dead_t_ch_even(16); // For estimation of dead time in right and bottom channels
+    for (int i = 0; i != 16; ++i) {
+        tot_dead_t_ch_even[i] = new TH2F(Form("tot_dead_t_even_ch_%d", i * 4), Form("Channel no. %d", i * 4), 100, 0, 3000, 50, 0, 250);
+        tot_dead_t_ch_even[i]->GetXaxis()->SetTitle("Time diff [ns]");
+        tot_dead_t_ch_even[i]->GetYaxis()->SetTitle("ToT 1st hit [ns]");
+    }
+
+    std::vector<TH2F *> tot_dead_t_ch_odd(16); // For estimation of dead time in left and top channels
+    for (int i = 0; i != 16; ++i) {
+        tot_dead_t_ch_odd[i] = new TH2F(Form("tot_dead_t_odd_ch_%d", i * 4 + 1), Form("Channel no. %d", i * 4 + 1), 100, 0, 3000, 50, 0, 250);
+        tot_dead_t_ch_odd[i]->GetXaxis()->SetTitle("Time diff [ns]");
+        tot_dead_t_ch_odd[i]->GetYaxis()->SetTitle("ToT 1st hit [ns]");
     }
 
     TH2F *h_toa_corr = new TH2F("h_toa_corr", "Time of Arrival correlation between coincidences", n_bar_portions * 1.5, 0., thr_toa / 1.9, n_bar_portions * 1.5, thr_toa / 2.2, thr_toa * 1.1);
@@ -1360,6 +1065,7 @@ summaryList *channelTimeProcess(const int run_number, TTree *tl, coincidence_Inf
 
                     float time_difference = (toa_j - toa_i);
                     ch_i % 2 == 0 ? dead_t_ch_even[ch_i / 4]->Fill(time_difference) : dead_t_ch_odd[ch_i / 4]->Fill(time_difference);
+                    ch_i % 2 == 0 ? tot_dead_t_ch_even[ch_i / 4]->Fill(time_difference, tot_i) : tot_dead_t_ch_odd[ch_i / 4]->Fill(time_difference, tot_i);
                 }
                 const int share_scintibar = check_couple_or_adjacent(ch_j, ch_i);
                 if (share_scintibar != -1) // Check if channels are a couple
@@ -1444,7 +1150,7 @@ summaryList *channelTimeProcess(const int run_number, TTree *tl, coincidence_Inf
         // cisbani_processing(tl, thr_toa, ntref, trigger_idx, nsig, cv, hx, hy, hix, hiy, hxy);
     }
 
-    plot_timing_data(h_time_diff, h_coinc_per_trigger, dead_t_ch_even, dead_t_ch_odd, h_toa_corr, h_toa, tot_global_corr, h_tot_prod, tot_corr_ch, hxy_channels, hxy_bars, hxy_bars_toa, hxy_bars_tot, hxy_cross_bars, thr_toa, run_number);
+    plot_timing_data(h_time_diff, h_coinc_per_trigger, dead_t_ch_even, dead_t_ch_odd, tot_dead_t_ch_even, tot_dead_t_ch_odd, h_toa_corr, h_toa, tot_global_corr, h_tot_prod, tot_corr_ch, hxy_channels, hxy_bars, hxy_bars_toa, hxy_bars_tot, hxy_cross_bars, thr_toa, run_number);
 
     std::cout << "\nTotal anomalous negative time differences of this run: " << negtimediff << " out of " << tottimediff << " ( " << 100. * (float)negtimediff / (float)tottimediff << "% )\n";
     std::cout << std::setw(30) << std::left << "Total coincidences" << std::setw(30) << std::left << "Total double coincidences" << std::setw(30) << std::left << "Total cross coincidences" << "\n";
@@ -2076,20 +1782,73 @@ int Check_Coinc() // std::vector<int> runs)
 
 int main() {
 
-    /*std::vector<int> run_numbers;
-    for (const auto &pair : run_delays)
-    {
-        run_numbers.push_back(pair.first);
-    }
-    std::sort(run_numbers.begin(), run_numbers.end());*/
-    const std::vector<int> run_numbers = {15, 16, 17, 18, 19, 20, 21, 28, 29, 30}; // 30 has 10000ns delay but very heavy file
-    const std::vector<int> ped_run_numbers = {13, 22, 33};
-
     try {
+        const std::vector<int> run_numbers = {13, 15, 16, 17, 18, 19, 20, 21, 22, 26, 27, 28, 29, 30, 31, 33, 44, 45, 46, 48, 49, 53, 54, 55, 56, 57, 58};
+        const std::vector<int> run_delays = {0, 0, 500, 1000, 1500, 2000, 2500, 3000, 0, 3000, 1000, 3500, 4000, 10000, 0, 0, 500, 2000, 10000, 10000, 2000, 2000, 0, 500, 2000, 2000, 2000};
+        const std::vector<TargetType> target_types(run_numbers.size(), TargetType::Light);
+        const std::vector<Mode> modes(run_numbers.size(), Mode::Physical);
+
+        RunsInfo runs(run_numbers, run_delays, target_types, modes);
+
+        runs.setMode(13, Mode::Pedestal);
+        runs.setMode(22, Mode::Pedestal);
+        runs.setMode(33, Mode::Pedestal);
+        runs.setTargetType(57, TargetType::Medium);
+        runs.setTargetType(58, TargetType::Heavy);
+
+        //    inline std::unordered_map<int, int> run_delays = {{15, 0}, {16, 500}, {17, 1000}, {18, 1500}, {19, 2000}, {20, 2500}, {21, 3000}, {28, 3500}, {29, 4000}, {26, 3000}, {27, 1000}, {30, 10000}, {31, 0}, {44, 500}, {45, 2000}, {46, 10000}, {48, 10000}, {49, 2000}, {53, 2000}, {54, 0}, {55, 500}, {56, 2000}, {57, 2000}, {58, 2000}};
+        //    inline std::unordered_map<int, std::string> run_targets = {{15, "light"}, {16, "light"}, {17, "light"}, {18, "light"}, {19, "light"}, {20, "light"}, {21, "light"}, {28, "light"}, {29, "light"}, {26, "light"}, {27, "light"}, {30, "light"}, {31, "light"}, {44, "light"}, {45, "light"}, {46, "light"}, {48, "light"}, {49, "light"}, {53, "light"}, {54, "light"}, {55, "light"}, {56, "light"}, {57, "medium"}, {58, "heavy"}};
+
+        auto pedestalRuns = runs.getPedestalRuns();
+        auto physicalRuns = runs.getPhysicalRuns();
+
+        std::cout << "Pedestal Runs: ";
+        for (int num : pedestalRuns) {
+            std::cout << num << " ";
+        }
+        std::cout << std::endl;
+
+        std::cout << "Physical Runs: ";
+        for (int num : physicalRuns) {
+            std::cout << num << " ";
+        }
+        std::cout << std::endl;
+
+        // Test the modified getters
+        const std::vector<int> selected_runs = {15, 16, 17, 18, 19, 57, 58, 20, 21, 28, 29, 30}; // 30 has 10000ns delay but very heavy file
+        auto subset_numbers = runs.getNumbers(selected_runs);
+        auto subset_delays = runs.getDelays(selected_runs);
+        auto subset_targetTypes = runs.getTargetTypes(selected_runs);
+        auto subset_modes = runs.getModes(selected_runs);
+
+        std::cout << "Subset Numbers: ";
+        for (int num : subset_numbers) {
+            std::cout << num << " ";
+        }
+        std::cout << std::endl;
+
+        std::cout << "Subset Delays: ";
+        for (int delay : subset_delays) {
+            std::cout << delay << " ";
+        }
+        std::cout << std::endl;
+
+        std::cout << "Subset Target Types: ";
+        for (auto type : subset_targetTypes) {
+            std::cout << static_cast<int>(type) << " ";
+        }
+        std::cout << std::endl;
+
+        std::cout << "Subset Modes: ";
+        for (auto mode : subset_modes) {
+            std::cout << static_cast<int>(mode) << " ";
+        }
+        std::cout << std::endl;
+
         std::ofstream output_file("../code/sipm/output.txt");
         (void)!freopen("../code/sipm/output.txt", "w", stdout);
-        timing_analysis("../test_231020/data", run_numbers, ped_run_numbers, 12., 3., bar_time_width * 4);
-        // processTEvents("../test_231020/data", run_numbers, ped_run_numbers, 5., 5., bar_time_width * 4., "cube/run_pkup_sall.root");
+        // timing_analysis("../test_231020/data", selected_runs, runs.getPedestalRuns(), 12., 3., bar_time_width * 4);
+        //  processTEvents("../test_231020/data", run_numbers, ped_run_numbers, 5., 5., bar_time_width * 4., "cube/run_pkup_sall.root");
         output_file.close();
     } catch (const std::exception &e) {
         handle_exception(e);

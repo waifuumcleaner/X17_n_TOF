@@ -222,7 +222,7 @@ std::vector<std::vector<float>> commonNoise(mmRawTree *tt, PEDES ped, int method
  *
  * @return TO BE DONE
  */
-int decodePhysRun(int phys_run = 1, int ped_run = -1, float nsigma = 3, int min_ncsample = 6, int max_ncsample = 20, int verbose = 0, int outType = 0, TString dpath = "../../test_231020/data/srs");
+int decodePhysRun(int phys_run = 1, int ped_run = -1, float nsigma = 3, int min_ncsample = 6, int max_ncsample = 20, int verbose = 0, int outType = 0, TString dpath = "../test_231020/data/srs");
 
 /**
  * @brief
@@ -236,7 +236,7 @@ int decodePhysRun(int phys_run = 1, int ped_run = -1, float nsigma = 3, int min_
  *
  * @return TO BE DONE
  */
-int readAna(int nrun = 1, Float_t thr_q = 1000, Int_t thr_ns = 1, Int_t thr_nt = 5, TString dpath = "../../test_231020/data/srs");
+int readAna(int nrun = 1, Float_t thr_q = 1000, Int_t thr_ns = 1, Int_t thr_nt = 5, TString dpath = "../test_231020/data/srs");
 
 /**
  * @brief
@@ -245,7 +245,7 @@ int readAna(int nrun = 1, Float_t thr_q = 1000, Int_t thr_ns = 1, Int_t thr_nt =
  * @param run Physics run number
  * @param dpath Data path of raw data
  */
-void readClusterOut(int run = 1, TString dpath = "../../test_231020/data/srs");
+void readClusterOut(int run = 1, TString dpath = "../test_231020/data/srs");
 
 /**
  * @brief
@@ -254,7 +254,7 @@ void readClusterOut(int run = 1, TString dpath = "../../test_231020/data/srs");
  * @param run Physics run number
  * @param dpath Data path of raw data
  */
-void readTrackOut(int run = 1, TString dpath = "../../test_231020/data/srs");
+void readTrackOut(int run = 1, TString dpath = "../test_231020/data/srs");
 
 int urwell_analysis_main();
 #endif

@@ -201,10 +201,9 @@ class tsCluster {
 
     int clusterAnalysis(float chi2r_thr = 5000., float dtstart_max = 4) {
 
-        float sample_period = 25.;            // [ns]
-        float funTau0 = 200. / sample_period; // raising time constant (sample unit of 25 ns)
-        float funTau1 = 900. / sample_period; //
-        std::cout << "funTau0 and funTau1 are " << funTau0 << " and " << funTau1 << ", respectively\n";
+        // float sample_period = 25.; // [ns]
+        //  float funTau0 = 200. / sample_period; // raising time constant (sample unit of 25 ns) // it is 8
+        //  float funTau1 = 900. / sample_period; // it is 36
 
         TGraph *gr = new TGraph(nsam);
 

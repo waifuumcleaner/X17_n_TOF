@@ -42,10 +42,10 @@
 #include "urwell_analysis.h"
 #include "utilf.h"
 
-// FROM SHELL: g++ urwana.cpp  -Wall -Wextra -g -O3 `root-config --cflags --libs`
+// FROM SHELL: g++ urwell_analysis.cpp mmRawTree.cpp -Wall -Wextra -g -O3 `root-config --cflags --libs`
 //              ./a.out
 // FROM ROOT : .L urwana.cpp+
-//             decodePhysRun(29, 27, 5, 6, 18)
+//             decodePhysRun(29, 27, 5, 6, 18, 0, 0, "../../test_231020/data/srs/");
 
 // from apv and ch (electronics) indeces to absolute channel index (or strip index)
 int e2a(int iapv, int irch) { return iapv * 128 + irch; }
@@ -520,8 +520,6 @@ int decodePhysRun(int phys_run, int ped_run, float nsigma, int min_ncsample, int
 
     fIn->ls();
 
-    printf("Pedestal processed\n");
-
     TTree *tree;
     fIn->GetObject("raw", tree);
 
@@ -545,6 +543,8 @@ int decodePhysRun(int phys_run, int ped_run, float nsigma, int min_ncsample, int
     } else {
         pdata = getPedestal(rT, "null", fIn);
     }
+
+    printf("Pedestal processed\n");
 
     // prepare output trees
     // STRIPS sso; // why is this not used??
@@ -624,7 +624,7 @@ int decodePhysRun(int phys_run, int ped_run, float nsigma, int min_ncsample, int
     for (int i = 0; i < rT->numAPVs(); i++) {
         for (int j = 0; j < 128; j++) {
             int imod = rT->getModule(i, j); // chamber index
-            int istr = rT->getStrip(i, j);  // strip inde in chamber
+            int istr = rT->getStrip(i, j);  // strip index in chamber
             if (pdata.sigma[i][j] < 0) {    // masked channel
                 tsC->maskChannel(imod, istr);
             }
@@ -1111,11 +1111,10 @@ void readTrackOut(int run, TString dpath) {
 };
 
 int main() {
-
     try {
-        std::ofstream output_file("output.txt");
-        (void)!freopen("output.txt", "w", stdout);
-        decodePhysRun(29, 27, 5, 6, 18, 1, 0);
+        std::ofstream output_file("../code/urwell/output.txt");
+        (void)!freopen("../code/urwell/output.txt", "w", stdout);
+        decodePhysRun(32, 27, 5, 6, 18, 0, 0, "../test_231020/data/srs");
         output_file.close();
     } catch (const std::exception &e) {
         handle_exception(e);

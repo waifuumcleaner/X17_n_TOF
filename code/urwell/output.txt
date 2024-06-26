@@ -1,0 +1,117 @@
+TFile**		../test_231020/data/srs/run32.root	
+ TFile*		../test_231020/data/srs/run32.root	
+  KEY: TTree	raw;4	rawapvdata [current cycle]
+  KEY: TTree	raw;3	rawapvdata [backup cycle]
+  KEY: TTree	pedestals;1	apvpedestals
+  KEY: TTree	data;1	apvdata
+  KEY: TTree	run_info;1	run_info
+  KEY: TDirectoryFile	config;1	parameters from config file
+Pedestal processed
+Total Entries (Events) : 2730
+### Extract Map from TTree raw data from first 10 entries
+ Min / Max APV card indices = 0 8
+ Mapping vector initialized
+ Found 27 samples/event
+ Found 3 modules (chambers):
+  Chamber B0 axis 0 has strips from 0 to 511
+  Chamber D3 axis 0 has strips from 0 to 255
+  Chamber D3 axis 1 has strips from 0 to 383
+TFile**		../test_231020/data/srs/run27.root	
+ TFile*		../test_231020/data/srs/run27.root	
+  KEY: TTree	raw;1	rawapvdata
+  KEY: TTree	pedestals;1	apvpedestals
+  KEY: TTree	data;1	apvdata
+  KEY: TTree	run_info;1	run_info
+  KEY: TDirectoryFile	config;1	parameters from config file
+###### Read Pedestal file ../test_231020/data/srs/run27.root
+ pedestal process B0 0
+ pedestal process D3 0
+ pedestal process D3 1
+ Hot channels from pedestal data (APV, ch):
+   1 41 (ped: -123.438156)
+   1 42 (ped: -141.596130)
+   2 85 (ped: -116.860458)
+   2 86 (ped: -145.312698)
+Output data on file: ../test_231020/data/srs/run32_ana.root
+ File ../test_231020/data/srs/run32_cluster.txt opened for writing
+ Allocate event display
+eventdisplay: allocate hpo tprofile 0
+eventdisplay: allocate hpo tprofile 1
+eventdisplay: allocate hpo tprofile 2
+eventdisplay: allocate hpo tprofile 3
+eventdisplay: allocate hpo tprofile 4
+eventdisplay: allocate hpo tprofile 5
+eventdisplay: allocate hpo tprofile 6
+eventdisplay: allocate hpo tprofile 7
+eventdisplay: allocate hpo tprofile 8
+eventdisplay: allocate hsvs tprofile 0
+eventdisplay: allocate hsvs tprofile 1
+eventdisplay: allocate hsvs tprofile 2
+eventdisplay: allocate TCanvases for 9 3
+Allocate histograms for 9 APVs
+new tprofile 0
+new tprofile 1
+new tprofile 2
+new tprofile 3
+new tprofile 4
+new tprofile 5
+new tprofile 6
+new tprofile 7
+new tprofile 8
+Histo et other variables allocated ...
+ - - - - - - - - - - - - EVENT n. 99 out of 2730 - - - - - - - - - -
+ - - - - - - - - - - - - EVENT n. 199 out of 2730 - - - - - - - - - -
+ - - - - - - - - - - - - EVENT n. 299 out of 2730 - - - - - - - - - -
+ - - - - - - - - - - - - EVENT n. 399 out of 2730 - - - - - - - - - -
+ - - - - - - - - - - - - EVENT n. 499 out of 2730 - - - - - - - - - -
+ - - - - - - - - - - - - EVENT n. 599 out of 2730 - - - - - - - - - -
+ - - - - - - - - - - - - EVENT n. 699 out of 2730 - - - - - - - - - -
+ - - - - - - - - - - - - EVENT n. 799 out of 2730 - - - - - - - - - -
+ - - - - - - - - - - - - EVENT n. 899 out of 2730 - - - - - - - - - -
+ - - - - - - - - - - - - EVENT n. 999 out of 2730 - - - - - - - - - -
+ - - - - - - - - - - - - EVENT n. 1099 out of 2730 - - - - - - - - - -
+ - - - - - - - - - - - - EVENT n. 1199 out of 2730 - - - - - - - - - -
+ - - - - - - - - - - - - EVENT n. 1299 out of 2730 - - - - - - - - - -
+ - - - - - - - - - - - - EVENT n. 1399 out of 2730 - - - - - - - - - -
+ - - - - - - - - - - - - EVENT n. 1499 out of 2730 - - - - - - - - - -
+ - - - - - - - - - - - - EVENT n. 1599 out of 2730 - - - - - - - - - -
+ - - - - - - - - - - - - EVENT n. 1699 out of 2730 - - - - - - - - - -
+ - - - - - - - - - - - - EVENT n. 1799 out of 2730 - - - - - - - - - -
+ - - - - - - - - - - - - EVENT n. 1899 out of 2730 - - - - - - - - - -
+ - - - - - - - - - - - - EVENT n. 1999 out of 2730 - - - - - - - - - -
+ - - - - - - - - - - - - EVENT n. 2099 out of 2730 - - - - - - - - - -
+ - - - - - - - - - - - - EVENT n. 2199 out of 2730 - - - - - - - - - -
+ - - - - - - - - - - - - EVENT n. 2299 out of 2730 - - - - - - - - - -
+ - - - - - - - - - - - - EVENT n. 2399 out of 2730 - - - - - - - - - -
+ - - - - - - - - - - - - EVENT n. 2499 out of 2730 - - - - - - - - - -
+ - - - - - - - - - - - - EVENT n. 2599 out of 2730 - - - - - - - - - -
+ - - - - - - - - - - - - EVENT n. 2699 out of 2730 - - - - - - - - - -
+Loop on events completed
+******************************************************************************
+*Tree    :tana      : Time Samples from run 32 (ped: 27)                     *
+*Entries :        0 : Total =            1834 bytes  File  Size =        616 *
+*        :          : Tree compression factor =   1.00                       *
+******************************************************************************
+*Br    0 :event     : evt/I:time/F                                           *
+*Entries :        0 : Total  Size=        565 bytes  One basket in memory    *
+*Baskets :        0 : Basket Size=      32000 bytes  Compression=   1.00     *
+*............................................................................*
+*Br    1 :tclu      : ch/I:nt/I:t0/I:qt/F:ct/F:lsc/I                         *
+*Entries :        0 : Total  Size=        850 bytes  One basket in memory    *
+*Baskets :        0 : Basket Size=      32000 bytes  Compression=   1.00     *
+*............................................................................*
+******************************************************************************
+*Tree    :sana      : Space Clusters from run 32 (ped: 27)                   *
+*Entries :        0 : Total =            1835 bytes  File  Size =        601 *
+*        :          : Tree compression factor =   1.00                       *
+******************************************************************************
+*Br    0 :event     : evt/I:time/F                                           *
+*Entries :        0 : Total  Size=        565 bytes  One basket in memory    *
+*Baskets :        0 : Basket Size=      32000 bytes  Compression=   1.00     *
+*............................................................................*
+*Br    1 :sclu      : ur/I:ns/I:qs/F:cs/F:ms/F:mq/F                          *
+*Entries :        0 : Total  Size=        847 bytes  One basket in memory    *
+*Baskets :        0 : Basket Size=      32000 bytes  Compression=   1.00     *
+*............................................................................*
+Output data file ../test_231020/data/srs/run32_ana.root closed
+ Output text file ../test_231020/data/srs/run32_cluster.txt closed
